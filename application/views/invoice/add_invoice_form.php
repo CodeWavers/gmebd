@@ -98,21 +98,21 @@
                                     <?php } ?>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
-                                <div class="form-group row">
-                                    <label for="employee" class="col-sm-4 col-form-label">Sale By
-                                        <i class="text-danger">*</i></label>
-                                    <div class="col-sm-8">
-                                        <select name="employee_id" class="form-control" required="">
-                                            <option value=""> select One</option>
-                                            <?php foreach($employee_list as $employee){?>
-                                                <option value="<?php echo $employee['id']?>"><?php echo $employee['first_name'].' '.$employee['last_name']?></option>
-                                            <?php } ?>
-
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
+<!--                            <div class="col-sm-4">-->
+<!--                                <div class="form-group row">-->
+<!--                                    <label for="employee" class="col-sm-4 col-form-label">Sale By-->
+<!--                                        <i class="text-danger">*</i></label>-->
+<!--                                    <div class="col-sm-8">-->
+<!--                                        <select name="employee_id" class="form-control" required="">-->
+<!--                                            <option value=""> select One</option>-->
+<!--                                            --><?php //foreach($employee_list as $employee){?>
+<!--                                                <option value="--><?php //echo $employee['id']?><!--">--><?php //echo $employee['first_name'].' '.$employee['last_name']?><!--</option>-->
+<!--                                            --><?php //} ?>
+<!---->
+<!--                                        </select>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
 
 
                             <div class="col-sm-8" id="payment_from_2">

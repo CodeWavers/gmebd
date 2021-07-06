@@ -51,7 +51,9 @@ class Invoices extends CI_Model {
         $this->db->select('count(*) as allcount');
         $this->db->from('invoice a');
         $this->db->join('customer_information b', 'b.customer_id = a.customer_id','left');
-        $this->db->join('employee_history u', 'u.id = a.sales_by','left');
+
+        $this->db->join('users u', 'u.user_id = a.sales_by','left');
+
         $this->db->order_by('a.invoice', 'desc');
         if($usertype == 2){
             $this->db->where('a.sales_by',$this->session->userdata('user_id'));
@@ -69,7 +71,7 @@ class Invoices extends CI_Model {
         $this->db->select('count(*) as allcount');
         $this->db->from('invoice a');
         $this->db->join('customer_information b', 'b.customer_id = a.customer_id','left');
-        $this->db->join('employee_history u', 'u.id = a.sales_by','left');
+        $this->db->join('users u', 'u.user_id = a.sales_by','left');
         $this->db->order_by('a.invoice', 'desc');
         if($usertype == 2){
             $this->db->where('a.sales_by',$this->session->userdata('user_id'));
@@ -87,11 +89,11 @@ class Invoices extends CI_Model {
         $this->db->select("a.*,b.customer_name,u.first_name,u.last_name");
         $this->db->from('invoice a');
         $this->db->join('customer_information b', 'b.customer_id = a.customer_id','left');
-        $this->db->join('employee_history u', 'u.id = a.sales_by','left');
+        $this->db->join('users u', 'u.user_id = a.sales_by','left');
         $this->db->order_by('a.invoice', 'desc');
-//        if($usertype == 2){
-//            $this->db->where('a.sales_by',$this->session->userdata('user_id'));
-//        }
+        if($usertype == 2){
+            $this->db->where('a.sales_by',$this->session->userdata('user_id'));
+        }
         if(!empty($fromdate) && !empty($todate)){
             $this->db->where($datbetween);
         }
@@ -645,7 +647,7 @@ class Invoices extends CI_Model {
                 'due_amount'      => $this->input->post('due_amount',TRUE),
                 'prevous_due'     => $this->input->post('previous',TRUE),
                 'shipping_cost'   => $this->input->post('shipping_cost',TRUE),
-                'sales_by'        => $this->input->post('employee_id',TRUE),
+                'sales_by'        => $createby,
                 'status'          => 2,
                 'payment_type'    =>  $this->input->post('paytype',TRUE),
                 'delivery_type'    =>  $delivery_type,
@@ -712,7 +714,7 @@ class Invoices extends CI_Model {
                 'due_amount'      => $this->input->post('due_amount',TRUE),
                 'prevous_due'     => $this->input->post('previous',TRUE),
                 'shipping_cost'   => $this->input->post('shipping_cost',TRUE),
-                'sales_by'        => $this->input->post('employee_id',TRUE),
+                'sales_by'        => $createby,
                 'status'          => 1,
                 'payment_type'    =>  $this->input->post('paytype',TRUE),
 //                'cheque_date'     =>$cheque_d,
