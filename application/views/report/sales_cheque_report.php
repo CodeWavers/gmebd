@@ -363,6 +363,7 @@
                                             <th>Status</th>
                                             <th>Due Date</th>
                                             <th>Amount</th>
+                                            <th>Cheque Image</th>
                                             <th>Action</th>
                                         </tr>
                                         </thead>
@@ -494,6 +495,7 @@
                 {data:"status"},
                 {data:"cheque_date"},
                 {data:"amount"},
+                {data:"image"},
                 {data:"action","searchable":false,"orderable":false}
             ],
         });

@@ -1828,7 +1828,7 @@ class reports extends CI_Model {
             //          $nestedData['action']='<div><a href="javascript:;" class="glyphicon glyphicon-edit date-edit" data="'.$r->cheque_id.'" style="font-size:22px; color: #1bc9f5"></a></div>';
             $action='<div><a href="javascript:;" class="glyphicon glyphicon-edit date-edit" data="'.$r->cheque_id.'" style="font-size:22px; color: #1bc9f5"></a></div>';
 //            $data[] = $nestedData;
-
+            $image = '<img src="'.$r->image.'" class="img img-responsive" height="100" width="150">';
             $data[] = array(
                 'invoice_id'  =>   $r->invoice_id,
                 'customer_name' =>   $r->customer_name,
@@ -1836,6 +1836,7 @@ class reports extends CI_Model {
                 'cheque_type' =>  $r->cheque_type,
                 'cheque_no' =>  $r->cheque_no,
                 'status' =>$status,
+                'image' =>$image,
                 'cheque_date'=> $r->cheque_date,
                 'amount'=>number_format($r->amount, 2, '.', ',') ,
                 'action' =>$action
