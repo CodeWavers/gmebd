@@ -886,7 +886,7 @@ class Cinvoice extends CI_Controller {
         if($customer_info){
             $json_customer[''] = '';
             foreach ($customer_info as $value) {
-                $json_customer[] = array('label'=>$value['customer_name'],'value'=>$value['customer_id']);
+                $json_customer[] = array('label'=>$value['customer_id_two'],'value'=>$value['customer_id']);
             }
         }else{
             $json_customer[] = 'No Record found';

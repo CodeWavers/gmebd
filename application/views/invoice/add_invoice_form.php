@@ -83,11 +83,9 @@
 
                             <div class="col-sm-8" id="payment_from_1">
                                 <div class="form-group row">
-                                    <label for="customer_name" class="col-sm-3 col-form-label"><?php
-                                        echo display('customer_name').'/'.display('phone');
-                                        ?> <i class="text-danger">*</i></label>
+                                    <label for="customer_name" class="col-sm-3 col-form-label">Organization ID <i class="text-danger">*</i></label>
                                     <div class="col-sm-6">
-                                        <input type="text" size="100"  name="customer_name" class=" form-control" placeholder='<?php echo display('customer_name').'/'.display('phone') ?>' id="customer_name" tabindex="1" onkeyup="customer_autocomplete()" value="{customer_name}"/>
+                                        <input type="text" size="100"  name="customer_name" class=" form-control" placeholder='Organization ID' id="customer_name" tabindex="1" onkeyup="customer_autocomplete()" value="{customer_id_two}"/>
 
                                         <input id="autocomplete_customer_id" class="customer_hidden_value abc" type="hidden" name="customer_id" value="{customer_id}">
                                     </div>

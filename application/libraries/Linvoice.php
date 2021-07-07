@@ -237,6 +237,7 @@ class Linvoice {
             'taxes'         => $taxfield,
             'customer_name' => $customer_details[0]['customer_name'],
             'customer_id'   => $customer_details[0]['customer_id'],
+            'customer_id_two'   => $customer_details[0]['customer_id_two'],
             'bank_list'     => $bank_list,
             'bkash_list'     => $bkash_list,
             'branch_list'     => $branch_list
