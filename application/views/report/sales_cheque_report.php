@@ -94,8 +94,16 @@
                                     <label for="bank" class="col-sm-4 col-form-label">Amount:
                                         <i class="text-danger">*</i></label>
 
-                                    <div class="col-sm-6" style="padding-bottom:10px ">
+                                    <div class="col-sm-6">
                                         <input type="number"   name="amount[]" class=" form-control" placeholder=""  autocomplete="off"/>
+                                        <!--                                                <input type="number"   name="cheque_id[]" class=" form-control" placeholder="" value="--><?php //echo rand()?><!--" autocomplete="off"/>-->
+                                    </div>
+
+                                    <label for="bank" class="col-sm-4 col-form-label">Image:
+                                        <i class="text-danger">*</i></label>
+
+                                    <div class="col-sm-6" style="padding-bottom:10px ">
+                                        <input type="file" name="image[]" class="form-control" multiple="multiple" id="image" tabindex="4">
                                         <!--                                                <input type="number"   name="cheque_id[]" class=" form-control" placeholder="" value="--><?php //echo rand()?><!--" autocomplete="off"/>-->
                                     </div>
 
@@ -394,13 +402,13 @@
                 "                                                <input type=\"text\"   name=\"cheque_type[]\" class=\" form-control\" placeholder=\"\"   autocomplete=\"off\"/>\n" +
                 //"                                                <input type=\"number\"   name=\"cheque_id[]\" class=\" form-control\" placeholder=\"\"  value=\"<?php //echo rand();?>//\" autocomplete=\"off\"/>\n" +
                 "                                            </div>\n" +
-
                 "                                            <label for=\"bank\" class=\"col-sm-4 col-form-label\">Cheque NO:\n" +
                 "                                                <i class=\"text-danger\">*</i></label>\n" +
                 "                                            <div class=\"col-sm-6\">\n" +
                 "                                                <input type=\"number\"   name=\"cheque_no[]\" class=\" form-control\" placeholder=\"\"   autocomplete=\"off\"/>\n" +
                 //"                                                <input type=\"number\"   name=\"cheque_id[]\" class=\" form-control\" placeholder=\"\"  value=\"<?php //echo rand();?>//\" autocomplete=\"off\"/>\n" +
                 "                                            </div>\n" +
+
                 "\n" +
                 "\n" +
                 "                                            <label for=\"date\" class=\"col-sm-4 col-form-label\">Due Date <i class=\"text-danger\">*</i></label>\n" +
@@ -411,9 +419,13 @@
                 "\n" +
                 "                                            <label for=\"bank\" class=\"col-sm-4 col-form-label\">Amount:\n" +
                 "                                                <i class=\"text-danger\">*</i></label>\n" +
-                "                                            <div class=\"col-sm-6\" style=\"padding-bottom:10px \" >\n" +
+                "                                            <div class=\"col-sm-6\"  >\n" +
                 "                                                <input type=\"number\"   name=\"amount[]\" class=\" form-control\" placeholder=\"\"   autocomplete=\"off\"/>\n" +
-                //"                                                <input type=\"number\"   name=\"cheque_id[]\" class=\" form-control\" placeholder=\"\"  value=\"<?php //echo rand();?>//\" autocomplete=\"off\"/>\n" +
+                "                                            </div>\n" +
+                "                                            <label for=\"bank\" class=\"col-sm-4 col-form-label\">Image:\n" +
+                "                                                </label>\n" +
+                "                                            <div class=\"col-sm-6\" style=\"padding-bottom:10px \" >\n" +
+                "                                                <input type=\"file\"   name=\"image[]\" class=\" form-control\" placeholder=\"\"  multiple=\"multiple\" autocomplete=\"off\"/>\n" +
                 "                                            </div>\n" +
                 "\n" +
                 "\n" +
