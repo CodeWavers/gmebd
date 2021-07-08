@@ -508,6 +508,7 @@ $Web_settings = $CI->Web_settings->retrieve_setting_editdata();
                                 </div>
 
                             </div>
+
                         <div class="watermark_mr" style="border-style: double;background-image: url('<?php echo base_url() ?>assets/images/icons/watermark.png') !important;height: 50%;margin-top: 40%" >
 
                             <div class="panel-body" >
@@ -647,7 +648,9 @@ $Web_settings = $CI->Web_settings->retrieve_setting_editdata();
                                             </tr>
                                             <tr style="border-style: solid; border-color: #333333;background-color: rgba(242,240,245,0.3) !important;">
                                                 <?php
+
                                                 $total=$mr_detail['total'][0]['total']
+
 
                                                 ?>
                                                 <th style="border-style: solid;border-color: #333333; background-color: rgba(242,240,245,0.3) !important;">Balance Due</th>
@@ -689,6 +692,7 @@ $Web_settings = $CI->Web_settings->retrieve_setting_editdata();
 
                             </div>
                         </div>
+
                         </div>
                     </div>
 
