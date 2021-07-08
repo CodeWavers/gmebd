@@ -551,13 +551,25 @@ $(document).ready(function(){
 $(document).ready(function() {
     "use strict";
     var frm = $("#insert_sale");
+
+   // let myForm = document.getElementById('insert_sale');
+ //   var formData = new FormData(frm);
     var output = $("#output");
+
+  //  const formData = new FormData();
+  //  frm.append("file", this.imageObj);
+  //  frm.append("json", JSON.stringify(data));
     frm.on('submit', function(e) {
         e.preventDefault();
+
+    //    var formData = new FormData(this);
         $.ajax({
             url : $(this).attr('action'),
             method : $(this).attr('method'),
             dataType : 'json',
+            //processData:false,
+            //contentType: false,
+           // contentType: "application/json; charset=utf-8",
             data : frm.serialize(),
             success: function(data)
             {

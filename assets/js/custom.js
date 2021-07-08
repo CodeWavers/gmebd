@@ -1246,6 +1246,8 @@ $("#product_update").validate();
 //Insert product
 $("#insert_product").validate();
 
+// $("#insert_sale").validate();
+
 //Insert pos invoice
 $("#insert_pos_invoice").validate();
 

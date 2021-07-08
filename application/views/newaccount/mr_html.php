@@ -226,7 +226,7 @@ $Web_settings = $CI->Web_settings->retrieve_setting_editdata();
                                         </div>
                                     </div>
                                     <div class="col-sm-4"></div>
-                                    <div class="col-sm-4"> <div class="inv-footer-center">
+                                    <div class="col-sm-4"> <div class="mr-footer-center">
                                             Sign
                                         </div></div>
                                 </div>

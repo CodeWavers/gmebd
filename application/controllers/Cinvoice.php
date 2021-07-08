@@ -886,7 +886,7 @@ class Cinvoice extends CI_Controller {
         if($customer_info){
             $json_customer[''] = '';
             foreach ($customer_info as $value) {
-                $json_customer[] = array('label'=>$value['customer_name'],'value'=>$value['customer_id']);
+                $json_customer[] = array('label'=>$value['customer_id_two'],'value'=>$value['customer_id']);
             }
         }else{
             $json_customer[] = 'No Record found';
@@ -1117,10 +1117,47 @@ class Cinvoice extends CI_Controller {
         $cheque_type=$this->input->post('cheque_type',TRUE);
         $amount=$this->input->post('amount',TRUE);
 
+        $this->load->library('upload');
+        $image = array();
+        $ImageCount = count($_FILES['image']['name']);
+        for($i = 0; $i < $ImageCount; $i++){
+            $_FILES['file']['name']       = $_FILES['image']['name'][$i];
+            $_FILES['file']['type']       = $_FILES['image']['type'][$i];
+            $_FILES['file']['tmp_name']   = $_FILES['image']['tmp_name'][$i];
+            $_FILES['file']['error']      = $_FILES['image']['error'][$i];
+            $_FILES['file']['size']       = $_FILES['image']['size'][$i];
+
+            // File upload configuration
+            $uploadPath = 'my-assets/image/cheque/';
+            $config['upload_path'] = $uploadPath;
+            $config['allowed_types'] = 'jpg|jpeg|png|gif';
+            $config['encrypt_name']  = TRUE;
+
+            // Load and initialize upload library
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+
+            // Upload file to server
+            if($this->upload->do_upload('file')){
+                // Uploaded file data
+                $imageData = $this->upload->data();
+                $uploadImgData[$i]['image'] = $config['upload_path'].$imageData['file_name'];
+                $image_url = base_url() . $uploadImgData[$i]['image'];
+
+            }
+
+           // echo '<pre>';print_r( $uploadImgData[$i]['image']);exit();
+        }
+
+
+
+
+
         if ( ! empty($cheque_no) && ! empty($cheque_date) )
         {
             foreach ($cheque_no as $key => $value )
             {
+
 
                 $data['cheque_no'] = $value;
                 $data['invoice_id']=$invoice_id;
@@ -1129,9 +1166,10 @@ class Cinvoice extends CI_Controller {
                 $data['cheque_type'] = $cheque_type[$key];
                 $data['cheque_date'] = $cheque_date[$key];
                 $data['amount'] = $amount[$key];
+                $data['image'] = (!empty( $image_url) ?    $image_url : base_url('my-assets/image/product.png'));;
                 $data['status'] = 2;
 
-                   //echo '<pre>';print_r($data);
+                //   echo '<pre>';print_r($data);exit();
                 // $this->ProductModel->add_products($data);
 
 
