@@ -508,6 +508,187 @@ $Web_settings = $CI->Web_settings->retrieve_setting_editdata();
                                 </div>
 
                             </div>
+                        <div class="watermark_mr" style="border-style: double;background-image: url('<?php echo base_url() ?>assets/images/icons/watermark.png') !important;height: 50%;margin-top: 40%" >
+
+                            <div class="panel-body" >
+
+
+
+                                <div class="row print_header">
+
+
+                                    <div class="col-xs-6 text-left">
+                                        {company_info}
+                                        <img style="height: 100px;" src="<?php
+                                        if (isset($Web_settings[0]['invoice_logo'])) {
+                                            echo html_escape($Web_settings[0]['invoice_logo']);
+                                        }
+                                        ?>" class="img-bottom-m" alt="">
+
+
+                                    </div>
+
+
+
+                                    <div class="col-xs-6 text-right " style="">
+
+                                        <strong class="">{company_name}</strong><br>
+                                        {address}<br>
+                                        <abbr>{mobile},{email}</abbr>
+                                        <abbr>{website}</abbr>
+                                        {/company_info}
+
+
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="row print_header">
+
+
+
+                                    <div class="col-xs-6 text-left">
+                                        <h2 class="m-t-0">PAYMENT RECEIPT</h2>
+
+                                        <div style="margin-bottom: 5px"><b>Received From: </b>{customer_name} [{customer_address}]</div>
+
+                                    </div>
+
+                                    <div class="col-xs-6 text-right " style="">
+                                        <div style="margin-bottom: 5px"><u><b>No &nbsp;&nbsp;&nbsp;&nbsp;:</b> {invoice_no}</u></div>
+                                        <div style="margin-bottom: 5px"><u><b>Date &nbsp; :</b>{final_date}</u></div>
+
+                                    </div>
+
+
+                                </div>
+                                <div class="row print_header">
+
+
+
+
+                                    <div class="col-xs-8 text-left">
+
+
+                                        <div style="margin-top:5px"><b>Amount &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b>  <?php echo $am_inword ?>  TK Only</div>
+
+                                    </div>
+
+                                    <div class="col-xs-4 text-center " style="margin-bottom: 10px;">
+                                        <div style="margin-top:10px;border-style: solid;padding: 5px;">
+                                            <?php echo $currency?>&nbsp; {total}
+                                        </div>
+
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="row print_header">
+
+
+
+
+                                    <div class="col-xs-12 text-left">
+
+
+                                        <div style="margin-top:5px;margin-bottom:5px"><b>Payment For: </b><?php echo $mr_detail['data'][0]['remark']?></div>
+
+                                    </div>
+
+
+                                </div>
+
+
+                                <div class="row ">
+
+
+
+
+                                    <div class="col-xs-6 text-left ">
+
+
+                                        <div style="margin-bottom: 5px;margin-top:5px"><b>Paid by: </b><ul style="list-style-type:none">
+                                                <li><?php if( $pay_type==1){ echo '[✓]';} else echo '[]' ?> Cash in Hand</li>
+                                                <li><?php if( $pay_type==2){ echo '[✓]';} else echo '[]' ?> Cash in Cheque</li>
+                                                <li><?php if( $pay_type==4){ echo '[✓]';} else echo '[]' ?> Cash in Bank<</li>
+                                                <li><?php if( $pay_type==3){ echo '[✓]';} else echo '[]' ?> Cash in Bkash</li>
+                                                <li><?php if( $pay_type==5){ echo '[✓]';} else echo '[]' ?> Cash in Nagad<</li>
+
+
+
+                                            </ul>
+                                        </div>
+
+
+
+                                    </div>
+
+                                    <div class="col-xs-6 text-right" style="margin-bottom: 10px;">
+
+                                        <table class="table table-responsive" style="margin-top:5px;border-style: solid;border-color: #333333">
+
+                                            <tr style="border-style: solid;border-color: #333333; background-color: rgba(242,240,245,0.3) !important;">
+                                                <th style="border-style: solid;border-color: #333333; background-color: rgba(242,240,245,0.3) !important;">Ac. Amount</th>
+                                                <?php
+                                                $total_ac=$balance+$total;
+
+                                                ?>
+                                                <td style="border-style: solid; border-color: #333333;background-color: rgba(242,240,245,0.3) !important;">
+                                                    <?php echo $currency .'&nbsp'.number_format($total_ac,2)?></td>
+                                            </tr>
+                                            <tr style="border-style: solid;border-color: #333333; background-color: rgba(242,240,245,0.3) !important;">
+                                                <th style="border-style: solid; border-color: #333333;background-color: rgba(242,240,245,0.3) !important;">This Payment</th>
+                                                <td style="border-style: solid;border-color: #333333; background-color: rgba(242,240,245,0.3) !important;">
+                                                    <?php echo $currency?>&nbsp;{total}</td>
+                                            </tr>
+                                            <tr style="border-style: solid; border-color: #333333;background-color: rgba(242,240,245,0.3) !important;">
+                                                <?php
+                                                $total=$mr_detail['total'][0]['total']
+
+                                                ?>
+                                                <th style="border-style: solid;border-color: #333333; background-color: rgba(242,240,245,0.3) !important;">Balance Due</th>
+                                                <td style="border-style: solid;border-color: #333333; background-color: rgba(242,240,245,0.3) !important;">
+                                                    <?php echo $currency .'&nbsp'.number_format($balance,2)?></td>
+                                            </tr>
+
+
+
+
+                                        </table>
+
+
+                                    </div>
+
+
+
+
+                                </div>
+
+
+
+
+                                <div class="row print_header">
+                                    <div class="col-sm-4">
+                                        <div class="inv-footer-left">
+                                            <?php echo display('received_by') ?>  <?php echo $mr_detail['user'][0]['first_name']?> <?php echo $mr_detail['user'][0]['last_name']?>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4"></div>
+                                    <div class="col-sm-4"> <div class="mr-footer-center">
+                                            Sign
+                                        </div></div>
+                                </div>
+                                <div class="col-xs-12" style="margin-top: 5px;height: 30px;background-color: red !important;">
+
+
+                                </div>
+
+                            </div>
+                        </div>
                         </div>
                     </div>
 

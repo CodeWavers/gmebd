@@ -370,6 +370,8 @@ class Linvoice {
         $CI->load->model('Web_settings');
         $CI->load->library('occational');
         $CI->load->library('numbertowords');
+
+
         $invoice_detail = $CI->Invoices->retrieve_invoice_html_data($invoice_id);
         $taxfield = $CI->db->select('*')
             ->from('tax_settings')
@@ -464,6 +466,8 @@ class Linvoice {
             'is_unit'           => $isunit,
         );
 
+
+
         $chapterList = $CI->parser->parse('invoice/invoice_html_manual', $data, true);
         return $chapterList;
     }
@@ -476,7 +480,10 @@ class Linvoice {
         $CI->load->model('Web_settings');
         $CI->load->library('occational');
         $CI->load->library('numbertowords');
+
         $invoice_detail = $CI->Invoices->retrieve_invoice_html_data($invoice_id);
+        $cus_id=$invoice_detail[0]['customer_id'];
+        $customer_balance = $CI->Invoices->customer_balance($cus_id);
         $taxfield = $CI->db->select('*')
             ->from('tax_settings')
             ->where('is_show',1)
@@ -530,6 +537,8 @@ class Linvoice {
         $users = $CI->Invoices->user_invoice_data($user_id);
         $data = array(
             'title'             => display('invoice_details'),
+            'balance'        => $customer_balance[0]['balance'],
+            'pay_type'=>$invoice_detail[0]['payment_type'],
             'invoice_id'        => $invoice_detail[0]['invoice_id'],
             'invoice_no'        => $invoice_detail[0]['invoice'],
             'customer_name'     => $invoice_detail[0]['customer_name'],
@@ -576,6 +585,8 @@ class Linvoice {
         $CI->load->library('occational');
         $CI->load->library('numbertowords');
         $invoice_detail = $CI->Invoices->retrieve_invoice_html_data($invoice_id);
+        $cus_id=$invoice_detail[0]['customer_id'];
+        $customer_balance = $CI->Invoices->customer_balance($cus_id);
         $taxfield = $CI->db->select('*')
             ->from('tax_settings')
             ->where('is_show',1)
@@ -629,6 +640,8 @@ class Linvoice {
         $users = $CI->Invoices->user_invoice_data($user_id);
         $data = array(
             'title'             => display('invoice_details'),
+            'balance'        => $customer_balance[0]['balance'],
+            'pay_type'=>$invoice_detail[0]['payment_type'],
             'invoice_id'        => $invoice_detail[0]['invoice_id'],
             'invoice_no'        => $invoice_detail[0]['invoice'],
             'customer_name'     => $invoice_detail[0]['customer_name'],

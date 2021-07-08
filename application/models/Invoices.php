@@ -1333,6 +1333,20 @@ class Invoices extends CI_Model {
         return $invoice_id;
     }
 
+    public function customer_balance($customer_id){
+        $this->db->select("
+        b.HeadCode,((select ifnull(sum(Debit),0) from acc_transaction where COAID= `b`.`HeadCode` AND IsAppove = 1)-(select ifnull(sum(Credit),0) from acc_transaction where COAID= `b`.`HeadCode` AND IsAppove = 1)) as balance");
+        $this->db->from('customer_information a');
+        $this->db->join('acc_coa b','a.customer_id = b.customer_id','left');
+        $this->db->where('a.customer_id',$customer_id);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        }
+        return false;
+
+    }
+
     //Retrieve invoice_html_data
     public function retrieve_invoice_html_data($invoice_id) {
         $this->db->select('a.total_tax,
