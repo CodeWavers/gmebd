@@ -163,6 +163,7 @@
                                             <option value="2">Cheque Payment</option>
                                             <option value="4"><?php echo display('bank_payment') ?></option>
                                             <option value="3">Bkash Payment</option>
+                                            <option value="5">Nagad Payment</option>
 
                                         </select>
 
@@ -307,6 +308,22 @@
                                             <option value="">Select Location</option>
                                             <?php foreach($bkash_list as $bkash){?>
                                                 <option value="<?php echo html_escape($bkash['bkash_id'])?>"><?php echo html_escape($bkash['bkash_no']) ;?> (<?php echo html_escape($bkash['ac_name']) ;?>)</option>
+                                            <?php }?>
+                                        </select>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6" style="display: none" id="nagad_div">
+                                <div class="form-group row">
+                                    <label for="nagad" class="col-sm-4 col-form-label">Nagad Number <i class="text-danger">*</i></label>
+                                    <div class="col-sm-8">
+                                        <select name="nagad_id" class="form-control bankpayment"  id="nagad_id">
+                                            <option value="">Select Location</option>
+                                            <?php foreach($nagad_list as $nagad){?>
+                                                <option value="<?php echo html_escape($nagad['nagad_id'])?>"><?php echo html_escape($nagad['nagad_no']) ;?> (<?php echo html_escape($nagad['ac_name']) ;?>)</option>
                                             <?php }?>
                                         </select>
 

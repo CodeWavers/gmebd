@@ -95,7 +95,7 @@
 <!--                        </div>-->
 
                         <div class="form-group row">
-                            <label for="bank" class="col-sm-3 col-form-label">Acoount Type <i class="text-danger">*</i></label>
+                            <label for="bank" class="col-sm-3 col-form-label">Account Type <i class="text-danger">*</i></label>
                             <div class="col-sm-6">
                                 <select name="nagad_type" class="form-control bankpayment"  id="bank_id">
                                     <option value="">Select type</option>

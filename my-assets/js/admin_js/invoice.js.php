@@ -388,7 +388,7 @@ window.onload = function () {
 "use strict";
 function bank_paymet(val){
 
-    if (val==2 || 3 || 4){
+    if (val==2 || 3 || 4 || 5){
 
         if(val==2){
             var style = 'block';
@@ -419,6 +419,16 @@ function bank_paymet(val){
         }
 
         document.getElementById('bank_div_m').style.display = style;
+
+        if(val==5){
+            var style = 'block';
+            document.getElementById('nagad_id').setAttribute("required", true);
+        }else{
+            var style ='none';
+            document.getElementById('nagad_id').removeAttribute("required");
+        }
+
+        document.getElementById('nagad_div').style.display = style;
 
 
     }
