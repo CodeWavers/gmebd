@@ -432,6 +432,38 @@ class Lsettings {
         return $bankList;
     }
 
+    public function nagad_list() {
+        $CI = & get_instance();
+        $CI->load->model('Settings');
+        $CI->load->model('Web_settings');
+        $nagad_list = $CI->Settings->get_nagad_list();
+
+
+        if (!empty($nagad_list)) {
+            foreach ($nagad_list as $index => $value) {
+                $bb = $CI->Settings->bank_balance($value['bank_name']);
+                $nagad_list[$index]['balance'] = (!empty($bb[0]['balance'])?$bb[0]['balance']:0);
+            }
+        }
+
+        $i = 0;
+        if (!empty($nagad_list)) {
+            foreach ($nagad_list as $k => $v) {
+                $i++;
+                $nagad_list[$k]['sl'] = $i;
+            }
+        }
+        $currency_details = $CI->Web_settings->retrieve_setting_editdata();
+        $data = array(
+            'title'     => 'Nagad List',
+            'nagad_list' => $nagad_list,
+            'currency'  => $currency_details[0]['currency'],
+            'position'  => $currency_details[0]['currency_position'],
+        );
+        $bankList = $CI->parser->parse('settings/nagad', $data, true);
+        return $bankList;
+    }
+
     #=============Bank show by id=======#
 
     public function bank_show_by_id($bank_id) {
@@ -457,6 +489,17 @@ class Lsettings {
         $bankList = $CI->parser->parse('settings/edit_bkash', $data, true);
         return $bankList;
     }
+    public function nagad_show_by_id($nagad_id) {
+        $CI = & get_instance();
+        $CI->load->model('Settings');
+        $nagad_list = $CI->Settings->get_nagad_by_id($nagad_id);
+        $data = array(
+            'title'     => 'Nagad Edit',
+            'nagad_list' => $nagad_list
+        );
+        $bankList = $CI->parser->parse('settings/edit_nagad', $data, true);
+        return $bankList;
+    }
 
     #=============Bank Update by id=======#
 
@@ -470,6 +513,12 @@ class Lsettings {
         $CI = & get_instance();
         $CI->load->model('Settings');
         $bkash_list = $CI->Settings->bkash_update_by_id($bkash_id);
+        return true;
+    }
+     public function nagad_update_by_id($nagad_id) {
+        $CI = & get_instance();
+        $CI->load->model('Settings');
+        $nagad_list = $CI->Settings->nagad_update_by_id($nagad_id);
         return true;
     }
 
@@ -573,6 +622,57 @@ class Lsettings {
         //echo '<pre>';print_r($data);exit();
         $bkash_ledger = $CI->parser->parse('settings/bkash_ledger', $data, true);
         return $bkash_ledger;
+    }
+    public function nagad_ledger($nagad_id = null,$from= null,$to= null) {
+        $CI = & get_instance();
+        $CI->load->model('Settings');
+        $CI->load->model('Reports');
+        $CI->load->model('Web_settings');
+        $nagad_list = $CI->Settings->get_nagad_list();
+        $from_date = (!empty($from)?$from:date('Y-m-d'));
+        $to_date = (!empty($to)?$to:date('Y-m-d'));
+        $nagad_info = $CI->Settings->nagad_info($nagad_id);
+        $nagad_no=$nagad_info[0]['nagad_no'];
+        $ledger = $CI->Settings->nagad_ledger($nagad_no,$from_date,$to_date);
+        $total_ammount = 0;
+        $total_credit = 0;
+        $total_debit = 0;
+        $balance = 0;
+        $total_debit = 0;
+        $total_credit = 0;
+
+        if (!empty($ledger)) {
+            foreach ($ledger as $index => $value) {
+                    $ledger[$index]['debit'] = $ledger[$index]['Debit'];
+                    $total_debit += $ledger[$index]['debit'];
+
+                    $ledger[$index]['balance'] = $balance + ($ledger[$index]['Debit'] - $ledger[$index]['Credit']);
+                    $ledger[$index]['credit']  = $ledger[$index]['Credit'];
+                    $total_credit += $ledger[$index]['credit'];
+                     $balance = $ledger[$index]['balance'];
+
+            }
+        }
+
+        $currency_details = $CI->Web_settings->retrieve_setting_editdata();
+        $company_info         = $CI->Reports->retrieve_company();
+        $data = array(
+            'title'        => "Nagad Ledger",
+            'ledger'       => $ledger,
+            'nagad_info'    => $nagad_info,
+            'nagad_list'    => $nagad_list,
+            'total_credit' => number_format($total_credit, 2, '.', ','),
+            'total_debit'  => number_format($total_debit, 2, '.', ','),
+            'balance'      => number_format($balance, 2, '.', ','),
+            'currency'     => $currency_details[0]['currency'],
+            'position'     => $currency_details[0]['currency_position'],
+            'software_info'=> $currency_details,
+            'company'      => $company_info,
+        );
+
+        //echo '<pre>';print_r($data);exit();
+        $nagad_ledger = $CI->parser->parse('settings/nagad_ledger', $data, true);
+        return $nagad_ledger;
     }
 
 }
