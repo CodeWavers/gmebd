@@ -37,6 +37,19 @@ class Settings extends CI_Model {
         return false;
     }
 
+       public function get_nagad_list() {
+        $this->db->select('*');
+        $this->db->from('nagad_add');
+        $this->db->order_by('ac_name','asc');
+        $this->db->where('status', 1);
+
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        }
+        return false;
+    }
+
     //Person  List
     public function person_list() {
         $this->db->select('*');
@@ -368,6 +381,18 @@ class Settings extends CI_Model {
         return false;
     }
 
+    public function get_nagad_by_id($nagad_id) {
+        $this->db->select('*');
+        $this->db->from('nagad_add');
+        $this->db->where('nagad_id', $nagad_id);
+        $this->db->where('status', 1);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        }
+        return false;
+    }
+
     //Bank updaet by id
     public function bank_update_by_id($bank_id) {
         if ($_FILES['signature_pic']['name']) {
@@ -433,6 +458,28 @@ class Settings extends CI_Model {
         return true;
     }
 
+    public function nagad_update_by_id($nagad_id) {
+
+
+        $data = array(
+            'ac_name' => $this->input->post('ac_name',TRUE),
+            'nagad_no' => $this->input->post('nagad_no',TRUE),
+            'nagad_type' => $this->input->post('nagad_type',TRUE),
+            'status' => 1
+        );
+        $bank_coaupdate = [
+             'HeadName'         => $this->input->post('nagad_no',TRUE)
+        ];
+
+        $data['ac_name'] = $this->input->post('ac_name',TRUE);
+        $this->db->where('nagad_id', $nagad_id);
+        $this->db->update('nagad_add', $data);
+         $this->db->where('HeadName', $this->input->post('oldname',TRUE));
+        $this->db->update('acc_coa', $bank_coaupdate);
+        return true;
+    }
+
+
     //==========Bank Ledger=============///
     public function bank_ledger($bank_name,$from,$to) {
         $this->db->select('a.*,b.HeadName');
@@ -470,6 +517,24 @@ class Settings extends CI_Model {
         }
         return false;
     }
+    public function nagad_ledger($nagad_no,$from,$to) {
+        $this->db->select('a.*,b.HeadName');
+        $this->db->from('acc_transaction a');
+        $this->db->join('acc_coa b','a.COAID=b.HeadCode');
+        $this->db->where('b.PHeadName','Cash At Nagad');
+        if(!empty($nagad_no)){
+        $this->db->where('b.HeadName',$nagad_no);
+         }
+        $this->db->where('a.VDate >=', $from);
+        $this->db->where('a.VDate <=', $to);
+        $this->db->where('a.IsAppove',1);
+        $this->db->order_by('a.VDate','desc');
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        }
+        return false;
+    }
 
     //==========Bank Info=============//
     public function bank_info($bank_id) {
@@ -493,6 +558,18 @@ class Settings extends CI_Model {
         return false;
     }
 
+     public function nagad_info($nagad_id) {
+        $this->db->select('*');
+        $this->db->from('nagad_add');
+        $this->db->where('nagad_id', $nagad_id);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        }
+        return false;
+    }
+
+
  
 
     //COUNT PRODUCT
@@ -502,6 +579,9 @@ class Settings extends CI_Model {
 
     public function bkash_entry($data) {
         $this->db->insert('bkash_add', $data);
+    }
+     public function nagad_entry($data) {
+        $this->db->insert('nagad_add', $data);
     }
 
     //Add person
@@ -700,6 +780,11 @@ class Settings extends CI_Model {
 
     public function headcode_bkash(){
         $query=$this->db->query("SELECT MAX(HeadCode) as HeadCode FROM acc_coa WHERE HeadLevel='4' And HeadCode LIKE '1020103%'");
+        return $query->row();
+
+    }
+     public function headcode_nagad(){
+        $query=$this->db->query("SELECT MAX(HeadCode) as HeadCode FROM acc_coa WHERE HeadLevel='4' And HeadCode LIKE '1020104%'");
         return $query->row();
 
     }
