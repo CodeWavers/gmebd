@@ -44,10 +44,10 @@
             <div class="col-sm-12">
                 
             <?php if($this->permission1->method('bank_transaction','create')->access()){ ?>
-                  <a href="<?php echo base_url('Csettings/bank_transaction')?>" class="btn btn-info m-b-5 m-r-2"><i class="ti-align-justify"> </i> Bkash Transaction </a>
+                  <a href="<?php echo base_url('Csettings/bkash_transaction')?>" class="btn btn-info m-b-5 m-r-2"><i class="ti-align-justify"> </i> Bkash Transaction </a>
                 <?php }?>
                 <?php if($this->permission1->method('bank_list','read')->access()){ ?>
-                  <a href="<?php echo base_url('Csettings/bank_list')?>" class="btn btn-success m-b-5 m-r-2"><i class="ti-align-justify"> </i>  Manage Bkash</a>
+                  <a href="<?php echo base_url('Csettings/bkash_list')?>" class="btn btn-success m-b-5 m-r-2"><i class="ti-align-justify"> </i>  Manage Bkash</a>
                    <?php }?>
 
                

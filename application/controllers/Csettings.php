@@ -148,7 +148,7 @@ class Csettings extends CI_Controller {
            if($coa->HeadCode!=NULL){
                 $headcode=$coa->HeadCode+1;
            }else{
-                $headcode="102010302";
+                $headcode="102010401";
             }
 
         $createby=$this->session->userdata('user_id');
