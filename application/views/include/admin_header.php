@@ -1224,7 +1224,57 @@ $birthday = $CI->Reports->birthday_noti();
                     </ul>
                 </li>
             <?php } ?>
-            <!-- Bkash menu end -->
+            <!-- Nagad menu end -->
+                <!-- Nagad menu start -->
+            <?php if($this->permission1->method('add_nagad','create')->access() || $this->permission1->method('nagad_transaction','create')->access() || $this->permission1->method('bank_list','read')->access()){?>
+                <li class="treeview <?php
+                if ($this->uri->segment('2') == ("index") || $this->uri->segment('2') == ("nagad_list") || $this->uri->segment('2') == ("nagad_ledger") || $this->uri->segment('2') == ("nagad_transaction")) {
+                    echo "active";
+                } else {
+                    echo " ";
+                }
+                ?>">
+                    <a href="#">
+                        <i class="pe-7s-wallet"></i><span>Nagad</span>
+                        <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <?php if($this->permission1->method('add_nagad_number','create')->access()){ ?>
+                            <li class="treeview <?php if ($this->uri->segment('1') == ("Csettings") && $this->uri->segment('2') == ("index")){
+                                echo "active";
+                            } else {
+                                echo " ";
+                            }?>"><a href="<?php echo base_url('Csettings/nagad') ?>">Add Nagad Number</a></li>
+                        <?php }?>
+
+                        <?php if($this->permission1->method('nagad_list','read')->access()){ ?>
+                            <li class="treeview <?php if ($this->uri->segment('2') == ("nagad_list")){
+                                echo "active";
+                            } else {
+                                echo " ";
+                            }?>"><a href="<?php echo base_url('Csettings/nagad_list') ?>">Manage Nagad</a></li>
+                        <?php }?>
+                        <?php if($this->permission1->method('nagad_transaction','create')->access()){ ?>
+                            <li class="treeview <?php if ($this->uri->segment('2') == ("nagad_transaction")){
+                                echo "active";
+                            } else {
+                                echo " ";
+                            }?>"><a href="<?php echo base_url('Csettings/nagad_transaction') ?>">Nagad Transaction</a></li>
+                        <?php }?>
+
+                        <?php if($this->permission1->method('nagad_ledger','read')->access()){ ?>
+                            <li class="treeview <?php if ($this->uri->segment('2') == ("nagad_ledger")){
+                                echo "active";
+                            } else {
+                                echo " ";
+                            }?>"><a href="<?php echo base_url('Csettings/nagad_ledger') ?>">Nagad Ledger</a></li>
+                        <?php }?>
+                    </ul>
+                </li>
+            <?php } ?>
+            <!-- Nagad menu end -->
 
             <!-- Courier menu start -->
             <?php if($this->permission1->method('Ccourier','create')->access() || $this->permission1->method('add_courier','create')->access() || $this->permission1->method('Ccourier','read')->access()){?>
