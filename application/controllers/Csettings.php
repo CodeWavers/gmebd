@@ -12,7 +12,7 @@ class Csettings extends CI_Controller {
         $this->load->library('auth');
         $this->load->library('session');
         $this->load->model('Settings');
-        $this->auth->check_admin_auth();
+        $this->auth->check_admin_auth(); 
         $this->load->model('Web_settings');
     }
 
@@ -25,6 +25,12 @@ class Csettings extends CI_Controller {
     public function bkash() {
         $data = array('title' => 'Add Bkash');
         $content = $this->parser->parse('settings/new_bkash', $data, true);
+        $this->template->full_admin_html_view($content);
+    }
+
+     public function nagad() {
+        $data = array('title' => 'Add Nagad');
+        $content = $this->parser->parse('settings/new_nagad', $data, true);
         $this->template->full_admin_html_view($content);
     }
 
@@ -135,6 +141,48 @@ class Csettings extends CI_Controller {
         exit;
 
     }
+     public function add_new_nagad() {
+
+
+        $coa = $this->Settings->headcode_nagad();
+           if($coa->HeadCode!=NULL){
+                $headcode=$coa->HeadCode+1;
+           }else{
+                $headcode="102010302";
+            }
+
+        $createby=$this->session->userdata('user_id');
+        $createdate=date('Y-m-d H:i:s');
+        $data = array(
+            'nagad_id'   => $this->auth->generator(10),
+            'ac_name' => $this->input->post('ac_name',TRUE),
+            'nagad_no'   => $this->input->post('nagad_no',TRUE),
+            'nagad_type'    => $this->input->post('nagad_type',TRUE),
+            'status'    => 1
+        );
+            $bank_coa = [
+             'HeadCode'         => $headcode,
+             'HeadName'         => $this->input->post('nagad_no',TRUE),
+             'PHeadName'        => 'Cash At Nagad',
+             'HeadLevel'        => '4',
+             'IsActive'         => '1',
+             'IsTransaction'    => '1',
+             'IsGL'             => '0',
+             'HeadType'         => 'A',
+             'IsBudget'         => '0',
+             'IsDepreciation'   => '0',
+             'DepreciationRate' => '0',
+             'CreateBy'         => $createby,
+             'CreateDate'       => $createdate,
+        ];
+        $bankinfo = $this->Settings->nagad_entry($data);
+
+            $this->db->insert('acc_coa',$bank_coa);
+             $this->session->set_userdata(array('message' => display('successfully_added')));
+        redirect(base_url('Csettings/nagad'));
+        exit;
+
+    }
 
     public function bank_transaction() {
         $bank_list = $this->Settings->get_bank_list();
@@ -152,6 +200,15 @@ class Csettings extends CI_Controller {
             'bkash_list' => $bkash_list,
         );
         $content = $this->parser->parse('settings/bkash_debit_credit_manage', $data, true);
+        $this->template->full_admin_html_view($content);
+    }
+    public function nagad_transaction() {
+        $nagad_list = $this->Settings->get_nagad_list();
+        $data = array(
+            'title' => 'Nagad Transaction',
+            'nagad_list' => $nagad_list,
+        );
+        $content = $this->parser->parse('settings/nagad_debit_credit_manage', $data, true);
         $this->template->full_admin_html_view($content);
     }
 
@@ -231,7 +288,38 @@ class Csettings extends CI_Controller {
         redirect(base_url('Csettings/bkash_list'));
         exit;
     }
+public function nagad_debit_credit_manage_add() {
 
+        if ($this->input->post('account_type',TRUE) == "Debit(+)") {
+            $dr = $this->input->post('ammount',TRUE);
+        } else {
+            $cr = $this->input->post('ammount',TRUE);
+        }
+         $receive_by=$this->session->userdata('user_id');
+        $receive_date=date('Y-m-d');
+        $nagadname = $this->db->select('nagad_no')->from('nagad_add')->where('nagad_id',$this->input->post('nagad_id'))->get()->row()->nagad_no;
+       $coaid = $this->db->select('HeadCode')->from('acc_coa')->where('HeadName',$nagadname)->get()->row()->HeadCode;
+        //echo '<pre>';print_r($bkashname);exit();
+        $coabanktransaction = array(
+          'VNo'            =>  $this->input->post('withdraw_deposite_id',TRUE),
+          'Vtype'          =>  'Nagad Transaction',
+          'VDate'          =>  $this->input->post('date',TRUE),
+          'COAID'          =>  $coaid,
+          'Narration'      =>  $this->input->post('description',TRUE),
+          'Debit'          =>  (!empty($dr) ? $dr : 0),
+          'Credit'         =>  (!empty($cr) ? $cr : 0),
+          'IsPosted'       =>  1,
+          'CreateBy'       =>  $receive_by,
+          'CreateDate'     =>  date('Y-m-d H:i:s'),
+          'IsAppove'       =>  1
+        );
+
+       // echo '<pre>';print_r($coabanktransaction);exit();
+        $this->db->insert('acc_transaction',$coabanktransaction);
+        $this->session->set_userdata(array('message' => display('successfully_added')));
+        redirect(base_url('Csettings/nagad_list'));
+        exit;
+    }
     #==============Bank Ledger============#
 
     public function bank_ledger() {
@@ -246,6 +334,13 @@ class Csettings extends CI_Controller {
         $from    = $this->input->post('from_date',TRUE);
         $to      = $this->input->post('to_date',TRUE);
         $content = $this->lsettings->bkash_ledger($bkash_id,$from,$to);
+        $this->template->full_admin_html_view($content);
+    }
+    public function nagad_ledger() {
+        $nagad_id = $this->input->post('nagad_id',TRUE);
+        $from    = $this->input->post('from_date',TRUE);
+        $to      = $this->input->post('to_date',TRUE);
+        $content = $this->lsettings->nagad_ledger($nagad_id,$from,$to);
         $this->template->full_admin_html_view($content);
     }
 
@@ -579,8 +674,15 @@ class Csettings extends CI_Controller {
     public function bank_list() {
         $content = $this->lsettings->bank_list();
         $this->template->full_admin_html_view($content);
-    }public function bkash_list() {
+    }
+
+    public function bkash_list() {
         $content = $this->lsettings->bkash_list();
+        $this->template->full_admin_html_view($content);
+    }
+
+    public function nagad_list() {
+        $content = $this->lsettings->nagad_list();
         $this->template->full_admin_html_view($content);
     }
 
@@ -596,6 +698,12 @@ class Csettings extends CI_Controller {
         $this->template->full_admin_html_view($content);
     }
 
+
+    public function edit_nagad($nagad_id) {
+        $content = $this->lsettings->nagad_show_by_id($nagad_id);
+        $this->template->full_admin_html_view($content);
+    }
+
     #============Update Bank=============#
 
     public function update_bank($bank_id) {
@@ -608,6 +716,12 @@ class Csettings extends CI_Controller {
         $this->session->set_userdata(array('message' => display('successfully_updated')));
         redirect('Csettings/bkash_list');
     }
+      public function update_nagad($nagad_id) {
+        $content = $this->lsettings->nagad_update_by_id($nagad_id);
+        $this->session->set_userdata(array('message' => display('successfully_updated')));
+        redirect('Csettings/nagad_list');
+    }
+
 
     #==============Table list============#
 
