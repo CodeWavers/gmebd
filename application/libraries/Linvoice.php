@@ -229,6 +229,7 @@ class Linvoice {
             ->result_array();
         $bank_list          = $CI->Web_settings->bank_list();
         $bkash_list        = $CI->Web_settings->bkash_list();
+        $nagad_list        = $CI->Web_settings->nagad_list();
         $branch_list        = $CI->Courier->get_branch_list();
         $data = array(
             'title'         => display('add_new_invoice'),
@@ -240,6 +241,7 @@ class Linvoice {
             'customer_id_two'   => $customer_details[0]['customer_id_two'],
             'bank_list'     => $bank_list,
             'bkash_list'     => $bkash_list,
+            'nagad_list'     => $nagad_list,
             'branch_list'     => $branch_list
         );
         $invoiceForm = $CI->parser->parse('invoice/add_invoice_form', $data, true);

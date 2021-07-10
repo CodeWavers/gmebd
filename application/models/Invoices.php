@@ -510,6 +510,15 @@ class Invoices extends CI_Model {
             $bkashcoaid='';
         }
 
+        $nagad_id = $this->input->post('nagad_id',TRUE);
+        if(!empty($bkash_id)){
+            $nagadname = $this->db->select('nagad_no')->from('nagad_add')->where('nagad_id',$nagad_id)->get()->row()->nagad_no;
+
+            $nagadcoaid = $this->db->select('HeadCode')->from('acc_coa')->where('HeadName',$bkashname)->get()->row()->HeadCode;
+        }else{
+            $nagadcoaid='';
+        }
+
 
         $available_quantity = $this->input->post('available_quantity',TRUE);
         $currency_details = $this->Web_settings->retrieve_setting_editdata();
@@ -657,6 +666,7 @@ class Invoices extends CI_Model {
                 'delivery_type'    =>  $delivery_type,
                 'bank_id'         =>  (!empty($this->input->post('bank_id',TRUE))?$this->input->post('bank_id',TRUE):null),
                 'bkash_id'         =>  (!empty($this->input->post('bkash_id',TRUE))?$this->input->post('bkash_id',TRUE):null),
+                'nagad_id'         =>  (!empty($this->input->post('nagad_id',TRUE))?$this->input->post('nagad_id',TRUE):null),
                 'courier_id'         =>  (!empty($this->input->post('courier_id',TRUE))?$this->input->post('courier_id',TRUE):null),
                 'branch_id'         =>  (!empty($this->input->post('branch_id',TRUE))?$this->input->post('branch_id',TRUE):null),
             );
@@ -763,6 +773,7 @@ class Invoices extends CI_Model {
                 'delivery_type'    =>  $delivery_type,
                 'bank_id'         =>  (!empty($this->input->post('bank_id',TRUE))?$this->input->post('bank_id',TRUE):null),
                 'bkash_id'         =>  (!empty($this->input->post('bkash_id',TRUE))?$this->input->post('bkash_id',TRUE):null),
+                'nagad_id'         =>  (!empty($this->input->post('nagad_id',TRUE))?$this->input->post('nagad_id',TRUE):null),
                 'courier_id'         =>  (!empty($this->input->post('courier_id',TRUE))?$this->input->post('courier_id',TRUE):null),
                 'branch_id'         =>  (!empty($this->input->post('branch_id',TRUE))?$this->input->post('branch_id',TRUE):null),
             );
@@ -826,6 +837,21 @@ class Invoices extends CI_Model {
             'VDate'          =>  $createdate,
             'COAID'          =>  $bkashcoaid,
             'Narration'      =>  'Cash in Bkash paid amount for customer  Invoice No - '.$invoice_no_generated.' customer -'.$cusifo->customer_name,
+            'Debit'          =>  $paidamount,
+            'Credit'         =>  0,
+            'IsPosted'       =>  1,
+            'CreateBy'       =>  $createby,
+            'CreateDate'     =>  $createdate,
+            'IsAppove'       =>  1,
+
+        );
+
+        $nagadc = array(
+            'VNo'            =>  $invoice_id,
+            'Vtype'          =>  'INVOICE',
+            'VDate'          =>  $createdate,
+            'COAID'          =>  $nagadcoaid,
+            'Narration'      =>  'Cash in Nagad paid amount for customer  Invoice No - '.$invoice_no_generated.' customer -'.$cusifo->customer_name,
             'Debit'          =>  $paidamount,
             'Credit'         =>  0,
             'IsPosted'       =>  1,
@@ -915,6 +941,9 @@ class Invoices extends CI_Model {
             }
             if($this->input->post('paytype',TRUE) == 3){
                 $this->db->insert('acc_transaction',$bkashc);
+            }
+            if($this->input->post('paytype',TRUE) == 5){
+                $this->db->insert('acc_transaction',$nagadc);
             }
             // echo '<pre>';print_r($CUS);
 
