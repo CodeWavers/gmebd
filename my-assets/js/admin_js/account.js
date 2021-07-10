@@ -143,24 +143,6 @@ function calculationContravoucher(sl) {
         calculationContravoucher()
     }
 
-    "use strict";
-      function bank_paymet(val){
-        if(val==2){
-           var style = 'block'; 
-           document.getElementById('bank_id').setAttribute("required", true);
-        }else{
-   var style ='none';
-    document.getElementById('bank_id').removeAttribute("required");
-        }
-           
-    document.getElementById('bank_div').style.display = style;
-    }
-    
-     $( document ).ready(function() {
-  
-
-      $(".bankpayment").css("width", "100%");
-    });
 
 
 /*supplier receive part*/
