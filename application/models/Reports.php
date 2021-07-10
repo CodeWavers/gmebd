@@ -1866,7 +1866,7 @@ class reports extends CI_Model {
             //          $nestedData['action']='<div><a href="javascript:;" class="glyphicon glyphicon-edit date-edit" data="'.$r->cheque_id.'" style="font-size:22px; color: #1bc9f5"></a></div>';
             $action='<div><a href="javascript:;" class="glyphicon glyphicon-edit date-edit" data="'.$r->cheque_id.'" style="font-size:22px; color: #1bc9f5"></a></div>';
 //            $data[] = $nestedData;
-
+            $image = '<img src="'.$r->image.'" class="img img-responsive" height="100" width="150">';
             $data[] = array(
                 'invoice_id'  =>   $r->invoice_id,
                 'customer_name' =>   $r->customer_name,
@@ -1874,6 +1874,7 @@ class reports extends CI_Model {
                 'cheque_type' =>  $r->cheque_type,
                 'cheque_no' =>  $r->cheque_no,
                 'status' =>$status,
+                'image' =>$image,
                 'cheque_date'=> $r->cheque_date,
                 'amount'=>number_format($r->amount, 2, '.', ',') ,
                 'action' =>$action
@@ -2351,6 +2352,8 @@ class reports extends CI_Model {
         $customer_id=$this->input->post('customer_id');
         $with_cash=$this->input->post('with_cash');
         $bank_id=$this->input->post('bank_id');
+        $bkash_id=$this->input->post('bkash_id');
+        $nagad_id=$this->input->post('nagad_id');
         $paytype=$this->input->post('paytype');
 
 
@@ -2364,6 +2367,20 @@ class reports extends CI_Model {
             $bankcoaid = $this->db->select('HeadCode')->from('acc_coa')->where('HeadName',$bankname)->get()->row()->HeadCode;
         }else{
             $bankcoaid = '';
+        }
+        if(!empty($bkash_id)){
+            $bkashname = $this->db->select('bkash_no')->from('bkash_add')->where('bkash_id',$bkash_id)->get()->row()->bkash_no;
+
+            $bkashcoaid = $this->db->select('HeadCode')->from('acc_coa')->where('HeadName',$bkashname)->get()->row()->HeadCode;
+        }else{
+            $bkashcoaid = '';
+        }
+        if(!empty($nagad_id)){
+            $nagadname = $this->db->select('nagad_no')->from('nagad_add')->where('nagad_id',$nagad_id)->get()->row()->nagad_no;
+
+            $nagadcoaid = $this->db->select('HeadCode')->from('acc_coa')->where('HeadName',$nagadname)->get()->row()->HeadCode;
+        }else{
+            $nagadcoaid = '';
         }
 
        // $cus=$this->db->query('SELECT * FROM `customer_information` WHERE '.$customer_id.'')->row();
@@ -2394,14 +2411,49 @@ class reports extends CI_Model {
                 );
               //  echo '<pre>';print_r($data3);exit();
                 $ddd=$this->db->insert('acc_transaction', $data3);
-            }else{
+            }
+            if ($paytype==2) {
 
                 $bankc = array(
+                    'VNo' => $invoice_id,
+                    'Vtype' => 'INVOICE',
+                    'VDate' => $createdate,
+                    'COAID' => $bankcoaid,
+                    'Narration' => 'Installment amount for customer  Invoice No - ' . $invoice_no . ' and Cheque No-' . $cheque_number . ' customer -' . $cusifo->customer_name,
+                    'Debit' => $credit,
+                    'Credit' => 0,
+                    'IsPosted' => 1,
+                    'CreateBy' => $createby,
+                    'CreateDate' => $createdate,
+                    'IsAppove' => 1,
+
+                );
+                $this->db->insert('acc_transaction', $bankc);
+            }
+            if ($paytype==3) {
+                $bkashc = array(
+                    'VNo' => $invoice_id,
+                    'Vtype' => 'INVOICE',
+                    'VDate' => $createdate,
+                    'COAID' => $bkashcoaid,
+                    'Narration' => 'Installment amount for customer  Invoice No - ' . $invoice_no . ' and Bkash No-' . $bkashname . ' customer -' . $cusifo->customer_name,
+                    'Debit' => $credit,
+                    'Credit' => 0,
+                    'IsPosted' => 1,
+                    'CreateBy' => $createby,
+                    'CreateDate' => $createdate,
+                    'IsAppove' => 1,
+
+                );
+                $this->db->insert('acc_transaction', $bkashc);
+            }
+            if ($paytype==4) {
+                $nagadc = array(
                     'VNo'            =>  $invoice_id,
                     'Vtype'          =>  'INVOICE',
                     'VDate'          =>  $createdate,
-                    'COAID'          =>  $bankcoaid,
-                    'Narration'      =>  'Installment amount for customer  Invoice No - '.$invoice_no.' and Cheque No-'.$cheque_number.' customer -'.$cusifo->customer_name,
+                    'COAID'          =>  $nagadcoaid,
+                    'Narration'      =>  'Installment amount for customer  Invoice No - '.$invoice_no.' and Nagad No-'.$nagadcoaid.' customer -'.$cusifo->customer_name,
                     'Debit'          =>  $credit,
                     'Credit'         =>  0,
                     'IsPosted'       =>  1,
@@ -2411,7 +2463,7 @@ class reports extends CI_Model {
 
                 );
 
-                $this->db->insert('acc_transaction', $bankc);
+                $this->db->insert('acc_transaction', $nagadc);
 
             }
 
