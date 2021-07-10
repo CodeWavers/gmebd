@@ -219,7 +219,7 @@
                                     <div class="column1">
                                         <label for="credit_amount" class="col-md-3 col-form-label">Credit Amount</label>
 
-                                        <input style="width: auto;" type="text" id="credit_amount" class="form-control" name="credit_amount" value=""  readonly/>
+                                        <input style="width: auto;" type="text" id="credit_amount" class="form-control" name="credit_amount" value=""  />
                                     </div>
                                     <div class="column1">
                                         <label for="due_amount" class="col-md-3 col-form-label">Due Amount</label>
@@ -242,6 +242,8 @@
                                                 <select name="paytype" id="paytype" class="form-control" required="" onchange="bank_paymet(this.value)">
                                                     <option value="1">Cash</option>
                                                     <option value="2">Bank</option>
+                                                    <option value="3">Bkash</option>
+                                                    <option value="4">Nagad</option>
 
                                                 </select>
 
@@ -262,6 +264,42 @@
                                                     <option value="">Select Location</option>
                                                     <?php foreach($bank_list as $bank){?>
                                                         <option value="<?php echo $bank['bank_id']?>"><?php echo $bank['bank_name'];?> (<?php echo $bank['ac_number'];?>)</option>
+                                                    <?php }?>
+                                                </select>
+
+                                            </div>
+
+
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6" id="bkash_div">
+                                        <div class="form-group row">
+                                            <label for="bank" class="col-sm-3 col-form-label">Bkash</label>
+                                            <div class="col-sm-8">
+                                                <select name="bkash_id" class="form-control bankpayment"  id="bkash_id">
+                                                    <option value="">Select Location</option>
+                                                    <?php foreach($bkash_list as $bkash){?>
+                                                        <option value="<?php echo $bkash['bkash_id']?>"><?php echo $bkash['bkash_no'];?> (<?php echo $bkash['ac_name'];?>)</option>
+                                                    <?php }?>
+                                                </select>
+
+                                            </div>
+
+
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6" id="nagad_div">
+                                        <div class="form-group row">
+                                            <label for="bank" class="col-sm-3 col-form-label">Nagad</label>
+                                            <div class="col-sm-8">
+                                                <select name="nagad_id" class="form-control bankpayment"  id="nagad_id">
+                                                    <option value="">Select Location</option>
+                                                    <?php foreach($nagad_list as $nagad){?>
+                                                        <option value="<?php echo $nagad['nagad_id']?>"><?php echo $nagad['nagad_no'];?> (<?php echo $nagad['ac_name'];?>)</option>
                                                     <?php }?>
                                                 </select>
 
@@ -616,7 +654,26 @@
         }
 
         document.getElementById('bank_div').style.display = style;
+        if(val==3){
+            var style = 'block';
+            document.getElementById('bkash_id').setAttribute("required", true);
+        }else{
+            var style ='none';
+            document.getElementById('bkash_id').removeAttribute("required");
+        }
+
+        document.getElementById('bkash_div').style.display = style;
+        if(val==4){
+            var style = 'block';
+            document.getElementById('nagad_id').setAttribute("required", true);
+        }else{
+            var style ='none';
+            document.getElementById('nagad_id').removeAttribute("required");
+        }
+
+        document.getElementById('nagad_div').style.display = style;
     }
+
 
     $( document ).ready(function() {
         var paytype = $("#editpayment_type").val();
@@ -624,6 +681,18 @@
             $("#bank_div").css("display", "block");
         }else{
             $("#bank_div").css("display", "none");
+        }
+
+        if(paytype == 3){
+            $("#bkash_div").css("display", "block");
+        }else{
+            $("#bkash_div").css("display", "none");
+        }
+
+        if(paytype == 4){
+            $("#nagad_div").css("display", "block");
+        }else{
+            $("#nagad_div").css("display", "none");
         }
 
         $(".bankpayment").css("width", "100%");

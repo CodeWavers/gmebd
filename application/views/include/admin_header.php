@@ -852,7 +852,7 @@ $birthday = $CI->Reports->birthday_noti();
                                 echo "active";
                             } else {
                                 echo " ";
-                            }?>"><a href="<?php echo base_url('Admin_dashboard/purchase_warrenty_report_category_wise') ?>"><?php echo display('purchase_warrenty_report_category_wise') ?></a></li>
+                            }?>"><a href="<?php echo base_url('Admin_dashboard/purchase_warrenty_report_category_wise') ?>">Purchase Warrenty Report Category Wise</a></li>
 
 
 
