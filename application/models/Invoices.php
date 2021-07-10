@@ -514,7 +514,7 @@ class Invoices extends CI_Model {
         if(!empty($bkash_id)){
             $nagadname = $this->db->select('nagad_no')->from('nagad_add')->where('nagad_id',$nagad_id)->get()->row()->nagad_no;
 
-            $nagadcoaid = $this->db->select('HeadCode')->from('acc_coa')->where('HeadName',$bkashname)->get()->row()->HeadCode;
+            $nagadcoaid = $this->db->select('HeadCode')->from('acc_coa')->where('HeadName',$nagadname)->get()->row()->HeadCode;
         }else{
             $nagadcoaid='';
         }

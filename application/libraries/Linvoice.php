@@ -247,6 +247,39 @@ class Linvoice {
         $invoiceForm = $CI->parser->parse('invoice/add_invoice_form', $data, true);
         return $invoiceForm;
     }
+    public function pre_invoice_add_form() {
+        $CI = & get_instance();
+        $CI->load->model('Invoices');
+        $CI->load->model('Web_settings');
+        $CI->load->model('Courier');
+        $CI->load->model('Service');
+        $employee_list    = $CI->Service->employee_list();
+        $customer_details = $CI->Invoices->pos_customer_setup();
+        $currency_details = $CI->Web_settings->retrieve_setting_editdata();
+        $taxfield = $CI->db->select('tax_name,default_value')
+            ->from('tax_settings')
+            ->get()
+            ->result_array();
+        $bank_list          = $CI->Web_settings->bank_list();
+        $bkash_list        = $CI->Web_settings->bkash_list();
+        $nagad_list        = $CI->Web_settings->nagad_list();
+        $branch_list        = $CI->Courier->get_branch_list();
+        $data = array(
+            'title'         => display('add_new_invoice'),
+            'employee_list' => $employee_list,
+            'discount_type' => $currency_details[0]['discount_type'],
+            'taxes'         => $taxfield,
+            'customer_name' => $customer_details[0]['customer_name'],
+            'customer_id'   => $customer_details[0]['customer_id'],
+            'customer_id_two'   => $customer_details[0]['customer_id_two'],
+            'bank_list'     => $bank_list,
+            'bkash_list'     => $bkash_list,
+            'nagad_list'     => $nagad_list,
+            'branch_list'     => $branch_list
+        );
+        $invoiceForm = $CI->parser->parse('invoice/pre_add_invoice_form', $data, true);
+        return $invoiceForm;
+    }
 
     //Insert invoice
     public function insert_invoice($data) {

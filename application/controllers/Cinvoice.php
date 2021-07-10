@@ -17,6 +17,13 @@ class Cinvoice extends CI_Controller {
         $content = $CI->linvoice->invoice_add_form();
         $this->template->full_admin_html_view($content);
     }
+    public function pre_sale() {
+        $CI = & get_instance();
+        $CI->auth->check_admin_auth();
+        $CI->load->library('linvoice');
+        $content = $CI->linvoice->pre_invoice_add_form();
+        $this->template->full_admin_html_view($content);
+    }
 
     //Insert invoice
     public function insert_invoice() {
