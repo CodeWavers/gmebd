@@ -591,6 +591,8 @@
             var with_cash=  $('input[name=with_cash').val();
 
             var bank_id= $('#bank_id').val();
+            var bkash_id= $('#bkash_id').val();
+            var nagad_id= $('#nagad_id').val();
             var cheque_no= $('#cheque_no').val();
             var paytype= $('#paytype').val();
             var due_amount= $('#due_amount').val();
@@ -606,7 +608,7 @@
                 url: "<?php echo base_url()?>Admin_dashboard/cheque_date_editted",
                 dataType:'json',
                 async:false,
-                data:{invoice_id:invoice_id,paytype:paytype,bank_id:bank_id,cheque_id:cheque_id,csrf_test_name:csrf_test_name,cheque_date:cheque_date,payment_date:payment_date,with_cash:with_cash,hidden_status:hidden_status,cheque_no:cheque_no,customer_id:customer_id,due_amount:due_amount,paid_amount:paid_amount,credit_amount:credit_amount,invoice:invoice},
+                data:{invoice_id:invoice_id,paytype:paytype,bkash_id:bkash_id,nagad_id:nagad_id,bank_id:bank_id,cheque_id:cheque_id,csrf_test_name:csrf_test_name,cheque_date:cheque_date,payment_date:payment_date,with_cash:with_cash,hidden_status:hidden_status,cheque_no:cheque_no,customer_id:customer_id,due_amount:due_amount,paid_amount:paid_amount,credit_amount:credit_amount,invoice:invoice},
                 success:function(data)
                 {
 
