@@ -322,7 +322,7 @@ class Linvoice {
             'branch_id'       => $invoice_detail[0]['branch_id'],
             'paytype'         => $invoice_detail[0]['payment_type'],
             'delivery_type'   => $invoice_detail[0]['delivery_type'],
-            'sales_by'   => $invoice_detail[0]['sales_by'],
+            //'sales_by'   => $invoice_detail[0]['sales_by'],
             'sales_first_name'   => $invoice_detail[0]['first_name'],
             'sales_last_name'   => $invoice_detail[0]['last_name'],
         );
