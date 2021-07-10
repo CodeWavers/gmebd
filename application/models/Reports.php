@@ -550,6 +550,9 @@ class reports extends CI_Model {
     public function purchase_report_category_wise_count() {
 
     }
+    public function purchase_warrenty_report_category_wise_count() {
+
+    }
     public function purchase_report_shelf_wise_count() {
 
 
@@ -566,6 +569,18 @@ class reports extends CI_Model {
 //    ============= its for purchase_report_category_wise ===============
     public function purchase_report_category_wise($per_page = null, $page = null) {
         $this->db->select('b.product_name, b.product_model, SUM(a.quantity) as quantity, SUM(a.total_amount) as total_amount, d.purchase_date, c.category_name');
+        $this->db->group_by('b.product_id, c.category_id');
+        $this->db->from('product_purchase_details a');
+        $this->db->join('product_information b', 'b.product_id = a.product_id');
+        $this->db->join('product_category c', 'c.category_id = b.category_id');
+        $this->db->join('product_purchase d', 'd.purchase_id = a.purchase_id');
+
+        $this->db->limit($per_page, $page);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    public function purchase_warrenty_report_category_wise($per_page = null, $page = null) {
+        $this->db->select('b.product_name, b.product_model, SUM(a.quantity) as quantity, SUM(a.total_amount) as total_amount,a.warrenty_date, a.expired_date, d.purchase_date, c.category_name');
         $this->db->group_by('b.product_id, c.category_id');
         $this->db->from('product_purchase_details a');
         $this->db->join('product_information b', 'b.product_id = a.product_id');
@@ -648,7 +663,30 @@ class reports extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
+ public function filter_purchase_warrenty_report_category_wise($category = null, $from_date = null, $to_date = null, $per_page = null, $page = null) {
+        $dateRange = "a.warrenty_date BETWEEN '$from_date' AND '$to_date'";
+        $this->db->select('b.product_name, b.product_model,SUM(a.quantity) as quantity, SUM(a.total_amount) as total_amount, a.warrenty_date, c.category_name');
+        $this->db->group_by('b.product_id, c.category_id');
+        $this->db->from('product_purchase_details a');
+        $this->db->join('product_information b', 'b.product_id = a.product_id');
 
+        $this->db->join('product_category c', 'c.category_id = b.category_id');
+        $this->db->join('product_purchase d', 'd.purchase_id = a.purchase_id');
+
+        if ($category) {
+            $this->db->where('b.category_id', $category);
+        }
+        if ($category && $from_date && $to_date) {
+            $this->db->where('b.category_id', $category);
+            $this->db->where($dateRange);
+        }
+        if ($from_date && $to_date) {
+            $this->db->where($dateRange);
+        }
+        $this->db->limit($per_page, $page);
+        $query = $this->db->get();
+        return $query->result();
+    }
 //    public function filter_purchase_report_shelf_wise($product=null,$category = null, $from_date = null, $to_date = null, $per_page = null, $page = null) {
 //        $dateRange = "d.purchase_date BETWEEN '$from_date' AND '$to_date'";
 //        $this->db->select('b.product_name, b.product_model,SUM(a.quantity) as quantity, SUM(a.total_amount) as total_amount,a.shelf_id, d.purchase_date, c.category_name');
@@ -1828,7 +1866,7 @@ class reports extends CI_Model {
             //          $nestedData['action']='<div><a href="javascript:;" class="glyphicon glyphicon-edit date-edit" data="'.$r->cheque_id.'" style="font-size:22px; color: #1bc9f5"></a></div>';
             $action='<div><a href="javascript:;" class="glyphicon glyphicon-edit date-edit" data="'.$r->cheque_id.'" style="font-size:22px; color: #1bc9f5"></a></div>';
 //            $data[] = $nestedData;
-            $image = '<img src="'.$r->image.'" class="img img-responsive" height="100" width="150">';
+
             $data[] = array(
                 'invoice_id'  =>   $r->invoice_id,
                 'customer_name' =>   $r->customer_name,
@@ -1836,7 +1874,6 @@ class reports extends CI_Model {
                 'cheque_type' =>  $r->cheque_type,
                 'cheque_no' =>  $r->cheque_no,
                 'status' =>$status,
-                'image' =>$image,
                 'cheque_date'=> $r->cheque_date,
                 'amount'=>number_format($r->amount, 2, '.', ',') ,
                 'action' =>$action
