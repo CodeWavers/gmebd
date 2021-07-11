@@ -76,10 +76,15 @@ function dbtvouchercalculation(sl) {
         url : base_url + "accounts/debtvouchercode/" + id,
         type: "GET",
         dataType: "json",
+        data: $(this).serialize(),
         success: function(data)
         {
+           // var obj = JSON.stringify(data);
+            console.log(data);
           
-           $('#txtCode_'+sl).val(data);
+           $('#txtCode_'+sl).val(data.HeadCode);
+           $('#balance_'+sl).val(data.balance);
+           $('#customer_id_'+sl).val(data.customer_id);
         },
         error: function (jqXHR, textStatus, errorThrown)
         {

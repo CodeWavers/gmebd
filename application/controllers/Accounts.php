@@ -226,13 +226,25 @@ class Accounts extends CI_Controller {
     // Debit voucher code select onchange
     public function debtvouchercode($id){
 
-        $debitvcode = $this->db->select('*')
-            ->from('acc_coa')
-            ->where('HeadCode',$id)
+//        $debitvcode = $this->db->select('*')
+//            ->from('acc_coa')
+//            ->where('HeadCode',$id)
+//            ->get()
+//            ->row();
+    //    $code = $debitvcode->balance;
+
+        $debitvcode=  $this->db->select("
+        b.HeadCode,b.customer_id,((select ifnull(sum(Debit),0) from acc_transaction where COAID= `b`.`HeadCode` AND IsAppove = 1)-(select ifnull(sum(Credit),0) from acc_transaction where COAID= `b`.`HeadCode` AND IsAppove = 1)) as balance")
+            ->from('acc_coa b')
+            ->where('b.HeadCode',$id)
             ->get()
             ->row();
-        $code = $debitvcode->HeadCode;
-        echo json_encode($code);
+
+
+        $data['HeadCode']=$debitvcode->HeadCode;
+        $data['balance']=$debitvcode->balance;
+        $data['customer_id']=$debitvcode->customer_id;
+        echo json_encode($data);
 
     }
     //Supplier code

@@ -67,17 +67,17 @@
                              } ?>" class="form-control" readonly>
                         </div>
                     </div>
-                <div class="form-group row">
-                    <label for="customer_name" class="col-sm-2 col-form-label"><?php echo display('customer') ?><i class="text-danger">*</i></label>
-                    <div class="col-sm-4">
-                        <select name="customer_id" id="customer_id" class="form-control" required="">
-                            <option value=""></option>
-                            <?php foreach($customer as $customers){?>
-                                <option value="<?php echo html_escape($customers['customer_id'])?>"  <?php if($customers['customer_id'] == $customer_id){echo 'selected';}?>><?php echo html_escape($customers['customer_id_two'])?></option>
-                            <?php }?>
-                        </select>
-                    </div>
-                </div>
+<!--                <div class="form-group row">-->
+<!--                    <label for="customer_name" class="col-sm-2 col-form-label">--><?php //echo display('customer') ?><!--<i class="text-danger">*</i></label>-->
+<!--                    <div class="col-sm-4">-->
+<!--                        <select name="customer_id" id="customer_id" class="form-control" required="">-->
+<!--                            <option value=""></option>-->
+<!--                            --><?php //foreach($customer as $customers){?>
+<!--                                <option value="--><?php //echo html_escape($customers['customer_id'])?><!--"  --><?php //if($customers['customer_id'] == $customer_id){echo 'selected';}?><!--<?php //echo html_escape($customers['customer_id_two'])?><!--</option>-->
+<!--                            --><?php //}?>
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                </div>-->
 
                      <div class="form-group row">
                         <label for="ac" class="col-sm-2 col-form-label">Payment Type<i class="text-danger">*</i></label>
@@ -184,6 +184,7 @@
                                     <tr>
                                         <th class="text-center"><?php echo display('account_name')?><i class="text-danger">*</i></th>
                                          <th class="text-center"><?php echo display('code')?></th>
+                                         <th class="text-center">Due Amount</th>
                                           <th class="text-center"><?php echo display('amount')?><i class="text-danger">*</i></th>
 <!--                                           <th class="text-center">--><?php //echo display('action')?><!--</th>  -->
                                     </tr>
@@ -201,6 +202,12 @@
 
                                          </td>
                                         <td><input type="text" name="txtCode" value="" class="form-control "  id="txtCode_1" readonly=""></td>
+                                        <td>
+                                            <input type="text" name="balance" value="" class="form-control "  id="balance_1" readonly="">
+                                            <input type="hidden" name="customer_id" value="" class="form-control "  id="customer_id_1" readonly="">
+                                        </td>
+
+
                                         <td><input type="number" name="txtAmount" value="" class="form-control total_price text-right"  id="txtAmount_1" onkeyup="dbtvouchercalculation(1)" required="">
                                            </td>
 <!--                                       <td>-->
@@ -215,7 +222,7 @@
                                       <td >
                                            
                                         </td>
-                                        <td colspan="1" class="text-right"><label  for="reason" class="  col-form-label"><?php echo display('total') ?></label>
+                                        <td colspan="2" class="text-right"><label  for="reason" class="  col-form-label"><?php echo display('total') ?></label>
                                            </td>
                                         <td class="text-right">
                                             <input type="text" id="grandTotal" class="form-control text-right " name="grand_total" value="" readonly="readonly" />
