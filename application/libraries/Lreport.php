@@ -2020,7 +2020,7 @@ public function filter_purchase_warrenty_report_category_wise($category = null, 
         return $returnList;
     }
 
-// Tax report 
+// Tax report
     public function retrieve_dateWise_tax($from_date, $to_date, $links, $per_page, $page) {
         $CI = & get_instance();
         $CI->load->model('Reports');
@@ -2053,6 +2053,66 @@ public function filter_purchase_warrenty_report_category_wise($category = null, 
             'company'      => $company_info,
         );
         $reportList = $CI->parser->parse('report/tax_report', $data, true);
+        return $reportList;
+    }
+
+
+    //money receipt report
+    public function retrieve_money_receipt() {
+        $CI = & get_instance();
+        $CI->load->model('Reports');
+        $CI->load->model('Web_settings');
+        $CI->load->library('occational');
+        $mr_data = $CI->Reports->retrieve_money_receipt();
+        if (!empty($mr_data)) {
+            $i = 0;
+            foreach ($mr_data as $k => $v) {
+                $i++;
+                $mr_data[$k]['date'] = $CI->occational->dateConvert($mr_data[$k]['date']);
+            }
+        }
+        $currency_details = $CI->Web_settings->retrieve_setting_editdata();
+        $company_info = $CI->Reports->retrieve_company();
+        $data = array(
+            'title'        => "Money Receipt Report",
+            'all_data'     => $mr_data    ,
+            'currency'     => $currency_details[0]['currency'],
+            'position'     => $currency_details[0]['currency_position'],
+            'software_info'=> $currency_details,
+            'company'      => $company_info,
+        );
+
+        $reportList = $CI->parser->parse('report/money_receipt_report', $data, true);
+        return $reportList;
+    }
+
+    public function retrieve_dateWise_money_receipt($from_date, $to_date) {
+        $CI = & get_instance();
+        $CI->load->model('Reports');
+        $CI->load->model('Web_settings');
+        $CI->load->library('occational');
+        $mr_data = $CI->Reports->retrieve_dateWise_money_receipt($from_date, $to_date);
+        if (!empty($mr_data)) {
+            $i = 0;
+            foreach ($mr_data as $k => $v) {
+                $i++;
+                $mr_data[$k]['date'] = $CI->occational->dateConvert($mr_data[$k]['date']);
+            }
+        }
+        $currency_details = $CI->Web_settings->retrieve_setting_editdata();
+        $company_info = $CI->Reports->retrieve_company();
+        $data = array(
+            'title'        => "Money Receipt Report",
+            'all_data'     => $mr_data    ,
+            'from_date'    => $from_date,
+            'to_date'      => $to_date,
+            'currency'     => $currency_details[0]['currency'],
+            'position'     => $currency_details[0]['currency_position'],
+            'software_info'=> $currency_details,
+            'company'      => $company_info,
+        );
+
+        $reportList = $CI->parser->parse('report/money_receipt_report', $data, true);
         return $reportList;
     }
 

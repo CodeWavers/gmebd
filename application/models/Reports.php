@@ -1011,30 +1011,30 @@ class reports extends CI_Model {
     //Retrieve Monthly Sales Report
     public function monthly_sales_report() {
         $query1 = $this->db->query("
-            SELECT 
+            SELECT
                 date,
-                EXTRACT(MONTH FROM STR_TO_DATE(date,'%Y-%m-%d')) as month, 
+                EXTRACT(MONTH FROM STR_TO_DATE(date,'%Y-%m-%d')) as month,
                 COUNT(invoice_id) as total
-            FROM 
+            FROM
                 invoice
-            WHERE 
+            WHERE
                 EXTRACT(YEAR FROM STR_TO_DATE(date,'%Y-%m-%d'))  >= EXTRACT(YEAR FROM NOW())
-            GROUP BY 
+            GROUP BY
                 EXTRACT(YEAR_MONTH FROM STR_TO_DATE(date,'%Y-%m-%d'))
             ORDER BY
                 month ASC
         ")->result();
 
         $query2 = $this->db->query("
-            SELECT 
+            SELECT
                 purchase_date,
-                EXTRACT(MONTH FROM STR_TO_DATE(purchase_date,'%Y-%m-%d')) as month, 
+                EXTRACT(MONTH FROM STR_TO_DATE(purchase_date,'%Y-%m-%d')) as month,
                 COUNT(purchase_id) as total_month
-            FROM 
+            FROM
                 product_purchase
-            WHERE 
+            WHERE
                 EXTRACT(YEAR FROM STR_TO_DATE(purchase_date,'%Y-%m-%d'))  >= EXTRACT(YEAR FROM NOW())
-            GROUP BY 
+            GROUP BY
                 EXTRACT(YEAR_MONTH FROM STR_TO_DATE(purchase_date,'%Y-%m-%d'))
             ORDER BY
                 month ASC
@@ -2118,6 +2118,37 @@ class reports extends CI_Model {
         return false;
     }
 
+// money receipt query
+public function retrieve_money_receipt() {
+    $this->db->select("a.*, b.customer_name, c.Credit");
+    $this->db->from('money_receipt a');
+    $this->db->join('customer_information b', 'b.customer_id = a.customer_id');
+    $this->db->join('acc_transaction c', 'c.COAID = a.COAID');
+    $this->db->order_by('a.date', 'desc');
+
+    $query = $this->db->get();
+    if ($query->num_rows() > 0) {
+        return $query->result_array();
+    }
+    return false;
+}
+
+public function retrieve_dateWise_money_receipt($from_date, $to_date) {
+    $this->db->select("a.*, b.customer_name, c.Credit");
+    $this->db->from('money_receipt a');
+    $this->db->join('customer_information b', 'b.customer_id = a.customer_id');
+    $this->db->join('acc_transaction c', 'c.COAID = a.COAID');
+    $this->db->where('a.date >=', $from_date);
+    $this->db->where('a.date <=', $to_date);
+    $this->db->order_by('a.date', 'desc');
+
+    $query = $this->db->get();
+    if ($query->num_rows() > 0) {
+        return $query->result_array();
+    }
+    return false;
+}
+
 
     public function userList(){
         $this->db->select("*");
@@ -2282,9 +2313,9 @@ class reports extends CI_Model {
 
 
     public function dashboard_query1($invoice_id,$customer_id){
-        $sql =  "SELECT (SELECT SUM(total_price) FROM invoice_details a JOIN invoice b ON b.invoice_id = a.invoice_id WHERE a.invoice_id = '" . $invoice_id . "' AND b.customer_id = '" . $customer_id . "') as total_amount, 
-    (SELECT SUM(paid_amount) FROM invoice_details a JOIN invoice b ON b.invoice_id = a.invoice_id WHERE a.invoice_id = '" . $invoice_id . "' AND b.customer_id = '" . $customer_id . "') as total_paid, 
-    (SELECT SUM(due_amount) FROM invoice_details a JOIN invoice b ON b.invoice_id = a.invoice_id WHERE a.invoice_id = '" . $invoice_id . "' AND b.customer_id = '" . $customer_id . "') as total_due, 
+        $sql =  "SELECT (SELECT SUM(total_price) FROM invoice_details a JOIN invoice b ON b.invoice_id = a.invoice_id WHERE a.invoice_id = '" . $invoice_id . "' AND b.customer_id = '" . $customer_id . "') as total_amount,
+    (SELECT SUM(paid_amount) FROM invoice_details a JOIN invoice b ON b.invoice_id = a.invoice_id WHERE a.invoice_id = '" . $invoice_id . "' AND b.customer_id = '" . $customer_id . "') as total_paid,
+    (SELECT SUM(due_amount) FROM invoice_details a JOIN invoice b ON b.invoice_id = a.invoice_id WHERE a.invoice_id = '" . $invoice_id . "' AND b.customer_id = '" . $customer_id . "') as total_due,
     (SELECT SUM(total_discount) FROM invoice_details a JOIN invoice b ON b.invoice_id = a.invoice_id WHERE a.invoice_id = '" . $invoice_id . "' AND b.customer_id = '" . $customer_id . "') as total_discount";
         return $sql;
 

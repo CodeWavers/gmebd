@@ -260,7 +260,7 @@ $birthday = $CI->Reports->birthday_noti();
                                 echo " ";
                             }
                             ?>"><a href="<?php echo base_url('Cdiscount/manage_discount') ?>">Manage Discount</a></li>
-                        <?php } ?> 
+                        <?php } ?>
                         <!-- <?php if($this->permission1->method('pos_invoice','create')->access()){ ?>
                             <li class="treeview <?php
                             if ($this->uri->segment('2') == ("pos_invoice")) {
@@ -773,7 +773,7 @@ $birthday = $CI->Reports->birthday_noti();
 
 
             <!-- Report menu start -->
-            <?php if($this->permission1->method('add_closing','create')->access() || $this->permission1->method('closing_report','read')->access() || $this->permission1->method('all_report','read')->access() || $this->permission1->method('todays_customer_receipt','read')->access() || $this->permission1->method('todays_sales_report','read')->access() || $this->permission1->method('retrieve_dateWise_DueReports','read')->access() || $this->permission1->method('todays_purchase_report','read')->access() || $this->permission1->method('purchase_report_category_wise','read')->access() || $this->permission1->method('product_sales_reports_date_wise','read')->access() || $this->permission1->method('sales_report_category_wise','read')->access() || $this->permission1->method('shipping_cost_report','read')->access()){?>
+            <?php if($this->permission1->method('add_closing','create')->access() || $this->permission1->method('closing_report','read')->access() || $this->permission1->method('all_report','read')->access() || $this->permission1->method('todays_customer_receipt','read')->access() || $this->permission1->method('todays_sales_report','read')->access() || $this->permission1->method('retrieve_dateWise_DueReports','read')->access() || $this->permission1->method('todays_purchase_report','read')->access() || $this->permission1->method('purchase_report_category_wise','read')->access() || $this->permission1->method('product_sales_reports_date_wise','read')->access() || $this->permission1->method('sales_report_category_wise','read')->access() || $this->permission1->method('shipping_cost_report','read')->access() || $this->permission1->method('money_receipt','read')->access()){?>
                 <li class="treeview <?php
                 if ($this->uri->segment('2') == ("all_report") || $this->uri->segment('2') == ("todays_sales_report") || $this->uri->segment('2') == ("todays_purchase_report") || $this->uri->segment('2') == ("product_sales_reports_date_wise") || $this->uri->segment('2') == ("total_profit_report") || $this->uri->segment('2') == ("purchase_report_category_wise") || $this->uri->segment('2') == ("sales_report_category_wise") || $this->uri->segment('2') == ("filter_purchase_report_category_wise") || $this->uri->segment('2') == ("sales_report_category_wise") || $this->uri->segment('2') == ("todays_customer_receipt") || $this->uri->segment('2') == ("filter_sales_report_category_wise") || $this->uri->segment('2') == ("filter_customer_wise_receipt") || $this->uri->segment('2') == ("closing") || $this->uri->segment('2') == ("closing_report") || $this->uri->segment('2') == ("date_wise_closing_reports") || $this->uri->segment('2') == ("retrieve_dateWise_Shippingcost") || $this->uri->segment('2') == ("product_sales_search_reports") || $this->uri->segment('2') == ("user_sales_report") || $this->uri->segment('2') == ("retrieve_dateWise_DueReports") || $this->uri->segment('2') == ("sales_return") || $this->uri->segment('2') == ("supplier_return")|| $this->uri->segment('2') == ("retrieve_dateWise_tax")) {
                     echo "active";
@@ -859,7 +859,7 @@ $birthday = $CI->Reports->birthday_noti();
 
 
                         <?php } ?>
-                        
+
                             <?php if($this->permission1->method('purchase_warrenty_report_category_wise','read')->access()){ ?>
                             <li class="treeview <?php if ($this->uri->segment('2') == ("purchase_warrenty_report_category_wise")){
                                 echo "active";
@@ -953,6 +953,15 @@ $birthday = $CI->Reports->birthday_noti();
                                 echo " ";
                             }?>"><a href="<?php echo base_url('Admin_dashboard/total_profit_report') ?>"><?php echo display('profit_report') ?></a></li>
                         <?php } ?>
+
+                        <?php if($this->permission1->method('money_receipt','read')->access()){ ?>
+                            <li class="treeview <?php if ($this->uri->segment('2') == ("retrieve_money_receipt")){
+                                echo "active";
+                            } else {
+                                echo " ";
+                            }?>"><a href="<?php echo base_url('Admin_dashboard/retrieve_money_receipt') ?>">Money Receipt</a></li>
+                        <?php } ?>
+
                     </ul>
                 </li>
             <?php }?>
