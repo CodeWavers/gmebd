@@ -165,7 +165,7 @@ $Web_settings = $CI->Web_settings->retrieve_setting_editdata();
                                         <div style="margin-bottom: 5px;margin-top:5px"><b>Paid by: </b><ul style="list-style-type:none">
                                                 <li><?php if( $pay_type==1){ echo '[✓]';} else echo '[]' ?> Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<?php if( $pay_type==1){ echo '<u>Cash in Hand</u>';} else echo '________________' ?></li>
                                                 <li><?php if( $pay_type==2){ echo '[✓]';} else echo '[]' ?> Cheque No&nbsp;&nbsp;:<?php if($pay_type ==2){ echo '<u>'.$cheque_no.'</u>';} else echo '________________' ?></li>
-                                                <li><?php if( $pay_type==3 || 4){ echo '[✓]';} else echo '[]' ?> Other &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<?php if($pay_type ==3){ echo '<u>'.$other.'</u>';} else echo '________________' ?></li>
+                                                <li><?php if( $pay_type == 3 || 4){ echo '[✓]';} else echo '[]' ?> Other &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<?php if($pay_type ==3 || 4 ){ echo '<u>'.$other.'</u>';} else echo '________________' ?></li>
 
 
                                             </ul>
