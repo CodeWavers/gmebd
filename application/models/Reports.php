@@ -580,12 +580,24 @@ class reports extends CI_Model {
         return $query->result();
     }
     public function purchase_warrenty_report_category_wise($per_page = null, $page = null) {
-        $this->db->select('b.product_name, b.product_model, SUM(a.quantity) as quantity, SUM(a.total_amount) as total_amount,a.warrenty_date, a.expired_date, d.purchase_date, c.category_name');
-        $this->db->group_by('b.product_id, c.category_id');
+        $this->db->select('b.product_name, b.product_model, a.quantity,a.total_amount,a.warrenty_date, a.expired_date, c.category_name');
+        //$this->db->group_by('b.product_id, c.category_id');
         $this->db->from('product_purchase_details a');
         $this->db->join('product_information b', 'b.product_id = a.product_id');
         $this->db->join('product_category c', 'c.category_id = b.category_id');
-        $this->db->join('product_purchase d', 'd.purchase_id = a.purchase_id');
+        //$this->db->join('product_purchase d', 'd.purchase_id = a.purchase_id');
+
+        $this->db->limit($per_page, $page);
+        $query = $this->db->get();
+        return $query->result();
+    }
+      public function purchase_expired_report_category_wise($per_page = null, $page = null) {
+        $this->db->select('b.product_name, b.product_model, a.quantity,a.total_amount,a.warrenty_date, a.expired_date, c.category_name');
+        //$this->db->group_by('b.product_id, c.category_id');
+        $this->db->from('product_purchase_details a');
+        $this->db->join('product_information b', 'b.product_id = a.product_id');
+        $this->db->join('product_category c', 'c.category_id = b.category_id');
+        //$this->db->join('product_purchase d', 'd.purchase_id = a.purchase_id');
 
         $this->db->limit($per_page, $page);
         $query = $this->db->get();
@@ -663,15 +675,40 @@ class reports extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
+    
  public function filter_purchase_warrenty_report_category_wise($category = null, $from_date = null, $to_date = null, $per_page = null, $page = null) {
         $dateRange = "a.warrenty_date BETWEEN '$from_date' AND '$to_date'";
-        $this->db->select('b.product_name, b.product_model,SUM(a.quantity) as quantity, SUM(a.total_amount) as total_amount, a.warrenty_date, c.category_name');
-        $this->db->group_by('b.product_id, c.category_id');
+        $this->db->select('b.product_name, b.product_model,a.quantity,a.total_amount, a.warrenty_date, c.category_name');
+        // $this->db->group_by('b.product_id, c.category_id');
         $this->db->from('product_purchase_details a');
         $this->db->join('product_information b', 'b.product_id = a.product_id');
 
         $this->db->join('product_category c', 'c.category_id = b.category_id');
-        $this->db->join('product_purchase d', 'd.purchase_id = a.purchase_id');
+       // $this->db->join('product_purchase d', 'd.purchase_id = a.purchase_id');
+
+        if ($category) {
+            $this->db->where('b.category_id', $category);
+        }
+        if ($category && $from_date && $to_date) {
+            $this->db->where('b.category_id', $category);
+            $this->db->where($dateRange);
+        }
+        if ($from_date && $to_date) {
+            $this->db->where($dateRange);
+        }
+        $this->db->limit($per_page, $page);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    public function filter_purchase_expired_report_category_wise($category = null, $from_date = null, $to_date = null, $per_page = null, $page = null) {
+        $dateRange = "a.expired_date BETWEEN '$from_date' AND '$to_date'";
+        $this->db->select('b.product_name, b.product_model,a.quantity, a.total_amount, a.expired_date, c.category_name');
+        // $this->db->group_by('b.product_id, c.category_id');
+        $this->db->from('product_purchase_details a');
+        $this->db->join('product_information b', 'b.product_id = a.product_id');
+
+        $this->db->join('product_category c', 'c.category_id = b.category_id');
+        // $this->db->join('product_purchase d', 'd.purchase_id = a.purchase_id');
 
         if ($category) {
             $this->db->where('b.category_id', $category);
@@ -1866,7 +1903,7 @@ class reports extends CI_Model {
             //          $nestedData['action']='<div><a href="javascript:;" class="glyphicon glyphicon-edit date-edit" data="'.$r->cheque_id.'" style="font-size:22px; color: #1bc9f5"></a></div>';
             $action='<div><a href="javascript:;" class="glyphicon glyphicon-edit date-edit" data="'.$r->cheque_id.'" style="font-size:22px; color: #1bc9f5"></a></div>';
 //            $data[] = $nestedData;
-
+            $image = '<img src="'.$r->image.'" class="img img-responsive" height="100" width="150">';
             $data[] = array(
                 'invoice_id'  =>   $r->invoice_id,
                 'customer_name' =>   $r->customer_name,
@@ -1874,6 +1911,7 @@ class reports extends CI_Model {
                 'cheque_type' =>  $r->cheque_type,
                 'cheque_no' =>  $r->cheque_no,
                 'status' =>$status,
+                'image' =>$image,
                 'cheque_date'=> $r->cheque_date,
                 'amount'=>number_format($r->amount, 2, '.', ',') ,
                 'action' =>$action
@@ -2351,6 +2389,8 @@ class reports extends CI_Model {
         $customer_id=$this->input->post('customer_id');
         $with_cash=$this->input->post('with_cash');
         $bank_id=$this->input->post('bank_id');
+        $bkash_id=$this->input->post('bkash_id');
+        $nagad_id=$this->input->post('nagad_id');
         $paytype=$this->input->post('paytype');
 
 
@@ -2364,6 +2404,20 @@ class reports extends CI_Model {
             $bankcoaid = $this->db->select('HeadCode')->from('acc_coa')->where('HeadName',$bankname)->get()->row()->HeadCode;
         }else{
             $bankcoaid = '';
+        }
+        if(!empty($bkash_id)){
+            $bkashname = $this->db->select('bkash_no')->from('bkash_add')->where('bkash_id',$bkash_id)->get()->row()->bkash_no;
+
+            $bkashcoaid = $this->db->select('HeadCode')->from('acc_coa')->where('HeadName',$bkashname)->get()->row()->HeadCode;
+        }else{
+            $bkashcoaid = '';
+        }
+        if(!empty($nagad_id)){
+            $nagadname = $this->db->select('nagad_no')->from('nagad_add')->where('nagad_id',$nagad_id)->get()->row()->nagad_no;
+
+            $nagadcoaid = $this->db->select('HeadCode')->from('acc_coa')->where('HeadName',$nagadname)->get()->row()->HeadCode;
+        }else{
+            $nagadcoaid = '';
         }
 
        // $cus=$this->db->query('SELECT * FROM `customer_information` WHERE '.$customer_id.'')->row();
@@ -2394,14 +2448,49 @@ class reports extends CI_Model {
                 );
               //  echo '<pre>';print_r($data3);exit();
                 $ddd=$this->db->insert('acc_transaction', $data3);
-            }else{
+            }
+            if ($paytype==2) {
 
                 $bankc = array(
+                    'VNo' => $invoice_id,
+                    'Vtype' => 'INVOICE',
+                    'VDate' => $createdate,
+                    'COAID' => $bankcoaid,
+                    'Narration' => 'Installment amount for customer  Invoice No - ' . $invoice_no . ' and Cheque No-' . $cheque_number . ' customer -' . $cusifo->customer_name,
+                    'Debit' => $credit,
+                    'Credit' => 0,
+                    'IsPosted' => 1,
+                    'CreateBy' => $createby,
+                    'CreateDate' => $createdate,
+                    'IsAppove' => 1,
+
+                );
+                $this->db->insert('acc_transaction', $bankc);
+            }
+            if ($paytype==3) {
+                $bkashc = array(
+                    'VNo' => $invoice_id,
+                    'Vtype' => 'INVOICE',
+                    'VDate' => $createdate,
+                    'COAID' => $bkashcoaid,
+                    'Narration' => 'Installment amount for customer  Invoice No - ' . $invoice_no . ' and Bkash No-' . $bkashname . ' customer -' . $cusifo->customer_name,
+                    'Debit' => $credit,
+                    'Credit' => 0,
+                    'IsPosted' => 1,
+                    'CreateBy' => $createby,
+                    'CreateDate' => $createdate,
+                    'IsAppove' => 1,
+
+                );
+                $this->db->insert('acc_transaction', $bkashc);
+            }
+            if ($paytype==4) {
+                $nagadc = array(
                     'VNo'            =>  $invoice_id,
                     'Vtype'          =>  'INVOICE',
                     'VDate'          =>  $createdate,
-                    'COAID'          =>  $bankcoaid,
-                    'Narration'      =>  'Installment amount for customer  Invoice No - '.$invoice_no.' and Cheque No-'.$cheque_number.' customer -'.$cusifo->customer_name,
+                    'COAID'          =>  $nagadcoaid,
+                    'Narration'      =>  'Installment amount for customer  Invoice No - '.$invoice_no.' and Nagad No-'.$nagadcoaid.' customer -'.$cusifo->customer_name,
                     'Debit'          =>  $credit,
                     'Credit'         =>  0,
                     'IsPosted'       =>  1,
@@ -2411,7 +2500,7 @@ class reports extends CI_Model {
 
                 );
 
-                $this->db->insert('acc_transaction', $bankc);
+                $this->db->insert('acc_transaction', $nagadc);
 
             }
 
