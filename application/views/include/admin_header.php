@@ -170,6 +170,17 @@ $birthday = $CI->Reports->birthday_noti();
                             }
                             ?>"><a href="<?php echo base_url('Cinvoice') ?>"><?php echo display('new_invoice') ?></a></li>
                         <?php } ?>
+
+                        <?php if($this->permission1->method('new_invoice','create')->access()){ ?>
+                            <li  class="treeview <?php
+                            if ($this->uri->segment('2') == ("Cinvoice/pre_sale")) {
+                                echo "active";
+                            } else {
+                                echo " ";
+                            }
+                            ?>"><a href="<?php echo base_url('Cinvoice/pre_sale') ?>">Prerequisite Sale</a></li>
+                        <?php } ?>
+
                         <?php if($this->permission1->method('manage_invoice','read')->access()){ ?>
                             <li class="treeview <?php
                             if ($this->uri->segment('2') == ("manage_invoice")) {
@@ -239,6 +250,8 @@ $birthday = $CI->Reports->birthday_noti();
                             }
                             ?>"><a href="<?php echo base_url('Cdiscount/add_discount') ?>">Add Discount</a></li>
                         <?php } ?>
+
+
                       <?php if($this->permission1->method('manage_invoice','read')->access()){ ?>
                             <li class="treeview <?php
                             if ($this->uri->segment('2') == ("manage_invoice")) {
@@ -852,7 +865,18 @@ $birthday = $CI->Reports->birthday_noti();
                                 echo "active";
                             } else {
                                 echo " ";
-                            }?>"><a href="<?php echo base_url('Admin_dashboard/purchase_warrenty_report_category_wise') ?>"><?php echo display('purchase_warrenty_report_category_wise') ?></a></li>
+                            }?>"><a href="<?php echo base_url('Admin_dashboard/purchase_warrenty_report_category_wise') ?>">Purchase Warrenty Report Category Wise</a></li>
+
+
+
+
+                        <?php } ?>
+                          <?php if($this->permission1->method('purchase_expired_report_category_wise','read')->access()){ ?>
+                            <li class="treeview <?php if ($this->uri->segment('2') == ("purchase_expired_report_category_wise")){
+                                echo "active";
+                            } else {
+                                echo " ";
+                            }?>"><a href="<?php echo base_url('Admin_dashboard/purchase_expired_report_category_wise') ?>">Purchase Expired Report Category Wise</a></li>
 
 
 
