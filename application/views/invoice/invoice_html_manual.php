@@ -74,8 +74,13 @@ $Web_settings = $CI->Web_settings->retrieve_setting_editdata();
 
                             <div class="panel-body" >
 
+
                                 <div class="row" style="display: flex; ">
                                     <div class="col-sm-8  invoice-address" style="padding-top: 15px;">
+
+                                <div class="row" >
+                                    <div class="col-sm-8  invoice-address">
+
                                         <h2 class="m-t-0">Invoice</h2>
                                         <div><?php echo display('invoice_no') ?>: {invoice_no}</div>
                                         <div class="m-b-15">Date: {final_date}</div>

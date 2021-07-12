@@ -76,10 +76,15 @@ function dbtvouchercalculation(sl) {
         url : base_url + "accounts/debtvouchercode/" + id,
         type: "GET",
         dataType: "json",
+        data: $(this).serialize(),
         success: function(data)
         {
+           // var obj = JSON.stringify(data);
+            console.log(data);
           
-           $('#txtCode_'+sl).val(data);
+           $('#txtCode_'+sl).val(data.HeadCode);
+           $('#balance_'+sl).val(data.balance);
+           $('#customer_id_'+sl).val(data.customer_id);
         },
         error: function (jqXHR, textStatus, errorThrown)
         {
@@ -143,24 +148,6 @@ function calculationContravoucher(sl) {
         calculationContravoucher()
     }
 
-    "use strict";
-      function bank_paymet(val){
-        if(val==2){
-           var style = 'block'; 
-           document.getElementById('bank_id').setAttribute("required", true);
-        }else{
-   var style ='none';
-    document.getElementById('bank_id').removeAttribute("required");
-        }
-           
-    document.getElementById('bank_div').style.display = style;
-    }
-    
-     $( document ).ready(function() {
-  
-
-      $(".bankpayment").css("width", "100%");
-    });
 
 
 /*supplier receive part*/

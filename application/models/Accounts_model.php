@@ -411,6 +411,8 @@ class Accounts_model extends CI_Model {
         $pay_type = $this->input->post('paytype',TRUE);
         $other_name = $this->input->post('other',TRUE);
         $bank_name = $this->input->post('bank_id',TRUE);
+        $bkash_id = $this->input->post('bkash_id',TRUE);
+        $nagad_id = $this->input->post('nagad_id',TRUE);
         $cheque_type = $this->input->post('cheque_type',TRUE);
         $cheque_no = $this->input->post('cheque_no',TRUE);
         $cheque_date = $this->input->post('cheque_date',TRUE);
@@ -421,7 +423,20 @@ class Accounts_model extends CI_Model {
         $createdate=date('Y-m-d H:i:s');
 
 
-        ;
+        if(!empty($bkash_id)){
+            $bkashname = $this->db->select('bkash_no')->from('bkash_add')->where('bkash_id',$bkash_id)->get()->row()->bkash_no;
+
+            $bkashcoaid = $this->db->select('HeadCode')->from('acc_coa')->where('HeadName',$bkashname)->get()->row()->HeadCode;
+        }else{
+            $bkashcoaid = '';
+        }
+        if(!empty($nagad_id)){
+            $nagadname = $this->db->select('nagad_no')->from('nagad_add')->where('nagad_id',$nagad_id)->get()->row()->nagad_no;
+
+            $nagadcoaid = $this->db->select('HeadCode')->from('acc_coa')->where('HeadName',$nagadname)->get()->row()->HeadCode;
+        }else{
+            $nagadcoaid = '';
+        }
 
 
         $debitheadinfo = $this->db->select('*')->from('acc_coa')->where('HeadCode',$cAID)->get()->row();
@@ -490,6 +505,32 @@ class Accounts_model extends CI_Model {
             'CreateDate'     =>  $createdate,
             'IsAppove'       =>  1,
         );
+        $bkashc = array(
+            'VNo'            =>  $voucher_no,
+            'Vtype'          =>  $Vtype,
+            'VDate'          =>  $createdate,
+            'COAID'          =>  $bkashcoaid,
+            'Narration'      =>  'Cash in Bkash amount for customer  Money Receipt  No - '.$Vtype.' Customer '.$debitheadinfo->HeadName .' in '.$bank_name,
+            'Debit'          =>  $Credit,
+            'Credit'         =>  0,
+            'IsPosted'       =>  1,
+            'CreateBy'       =>  $CreateBy,
+            'CreateDate'     =>  $createdate,
+            'IsAppove'       =>  1,
+        );
+        $nagadc = array(
+            'VNo'            =>  $voucher_no,
+            'Vtype'          =>  $Vtype,
+            'VDate'          =>  $createdate,
+            'COAID'          =>  $nagadcoaid,
+            'Narration'      =>  'Cash in Nagad amount for customer  Money Receipt  No - '.$Vtype.' Customer '.$debitheadinfo->HeadName .' in '.$bank_name,
+            'Debit'          =>  $Credit,
+            'Credit'         =>  0,
+            'IsPosted'       =>  1,
+            'CreateBy'       =>  $CreateBy,
+            'CreateDate'     =>  $createdate,
+            'IsAppove'       =>  1,
+        );
 
 
         $data=array(
@@ -521,10 +562,20 @@ class Accounts_model extends CI_Model {
             'VNo'            =>  $voucher_no,
             'pay_type'          =>  $pay_type,
             'date'          =>  $VDate,
-            'COAID'          =>  $cAID,
-            'customer_id'          =>  $customer_id,
+            'COAID'          =>  $bkashcoaid,
+            'customer_id'    =>  $customer_id,
             'remark'        =>$Narration,
             'other_name'    =>$other_name
+
+        );
+        $data4=array(
+
+            'VNo'            =>  $voucher_no,
+            'pay_type'          =>  $pay_type,
+            'date'          =>  $VDate,
+            'COAID'          =>  $nagadcoaid,
+            'customer_id'          =>  $customer_id,
+            'remark'        =>$Narration
 
         );
         if ($pay_type == 1){
@@ -535,11 +586,15 @@ class Accounts_model extends CI_Model {
             $this->db->insert('acc_transaction',$bankc);
         }if ($pay_type == 3){
             $this->db->insert('money_receipt',$data3);
+            $this->db->insert('acc_transaction',$bkashc);
+        }if ($pay_type == 4){
+            $this->db->insert('money_receipt',$data4);
+            $this->db->insert('acc_transaction',$nagadc);
         }
 
-        //$this->db->insert('money_receipt',$data);
+            //$this->db->insert('money_receipt',$data);
 
-      //  $headinfo = $this->db->select('*')->from('acc_coa')->where('HeadCode',$dAID)->get()->row();
+         //$headinfo = $this->db->select('*')->from('acc_coa')->where('HeadCode',$dAID)->get()->row();
 
 
 

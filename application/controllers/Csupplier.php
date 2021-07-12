@@ -24,26 +24,55 @@ class Csupplier extends CI_Controller {
 
     //Insert supplier
     public function insert_supplier() {
+
+        $supp_id=mt_rand();
        
         $data = array(
+
             'supplier_name' => $this->input->post('supplier_name',TRUE),
             'address'       => $this->input->post('address',TRUE),
             'address2'      => $this->input->post('address2',TRUE),
             'mobile'        => $this->input->post('mobile',TRUE),
             'phone'         => $this->input->post('phone',TRUE),
             'contact'       => $this->input->post('contact',TRUE),
-            'emailnumber'   => $this->input->post('email',TRUE),
-            'email_address' => $this->input->post('emailaddress',TRUE),
+            'contact_mobile'       => $this->input->post('contact_mobile',TRUE),
+          //  'emailnumber'   => $this->input->post('email',TRUE),
+          //  'email_address' => $this->input->post('emailaddress',TRUE),
             'fax'           => $this->input->post('fax',TRUE),
             'city'          => $this->input->post('city',TRUE),
             'state'         => $this->input->post('state',TRUE),
             'zip'           => $this->input->post('zip',TRUE),
             'country'       => $this->input->post('country',TRUE),
             'details'       => $this->input->post('details',TRUE),
+            'website'       => $this->input->post('website',TRUE),
             'status'        => 1
         );
          
         $this->db->insert('supplier_information',$data);
+
+        $supplier_id = $this->db->insert_id();
+
+        $email=$this->input->post('email',TRUE);
+        if ( ! empty($email))
+        {
+
+            foreach ($email as $key => $value )
+            {
+
+
+                $data2['email_id'] = $value;
+                $data2['supplier_id']=$supplier_id;
+
+
+                //  echo '<pre>';print_r($data);
+                // $this->ProductModel->add_products($data);
+                if ( ! empty($data2))
+                {
+                    $this->db->insert('supplier_email', $data2);
+                }
+            }
+
+        }
 
 
             $supplier_id = $this->db->insert_id();

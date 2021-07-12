@@ -67,17 +67,17 @@
                              } ?>" class="form-control" readonly>
                         </div>
                     </div>
-                <div class="form-group row">
-                    <label for="customer_name" class="col-sm-2 col-form-label"><?php echo display('customer') ?><i class="text-danger">*</i></label>
-                    <div class="col-sm-4">
-                        <select name="customer_id" id="customer_id" class="form-control" required="">
-                            <option value=""></option>
-                            <?php foreach($customer as $customers){?>
-                                <option value="<?php echo html_escape($customers['customer_id'])?>"  <?php if($customers['customer_id'] == $customer_id){echo 'selected';}?>><?php echo html_escape($customers['customer_name'])?></option>
-                            <?php }?>
-                        </select>
-                    </div>
-                </div>
+<!--                <div class="form-group row">-->
+<!--                    <label for="customer_name" class="col-sm-2 col-form-label">--><?php //echo display('customer') ?><!--<i class="text-danger">*</i></label>-->
+<!--                    <div class="col-sm-4">-->
+<!--                        <select name="customer_id" id="customer_id" class="form-control" required="">-->
+<!--                            <option value=""></option>-->
+<!--                            --><?php //foreach($customer as $customers){?>
+<!--                                <option value="--><?php //echo html_escape($customers['customer_id'])?><!--"  --><?php //if($customers['customer_id'] == $customer_id){echo 'selected';}?><!--<?php //echo html_escape($customers['customer_id_two'])?><!--</option>-->
+<!--                            --><?php //}?>
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                </div>-->
 
                      <div class="form-group row">
                         <label for="ac" class="col-sm-2 col-form-label">Payment Type<i class="text-danger">*</i></label>
@@ -85,7 +85,8 @@
                           <select name="paytype" id="cmbDebit" class="form-control" required="" onchange="bank_paymet(this.value)">
                               <option value="1"><?php echo display('cash_payment') ?></option>
                               <option value="2"><?php echo display('bank_payment') ?></option>
-                              <option value="3">Other</option>
+                              <option value="3">Bkash</option>
+                              <option value="4">Nagad</option>
 
                           </select>
                         </div>
@@ -125,16 +126,43 @@
 
                              </div>
                          </div>
-                         <div class="col-sm-6" style="display: none" id="bkash_div">
+                         <div class="col-sm-6" id="bkash_div">
                              <div class="form-group row">
-                                 <label for="bkash" class="col-sm-4 col-form-label">Other <i class="text-danger">*</i></label>
+                                 <label for="bank" class="col-sm-3 col-form-label">Bkash</label>
                                  <div class="col-sm-8">
+                                     <select name="bkash_id" class="form-control bankpayment"  id="bkash_id">
+                                         <option value="">Select Location</option>
+                                         <?php foreach($bkash_list as $bkash){?>
+                                             <option value="<?php echo $bkash['bkash_id']?>"><?php echo $bkash['bkash_no'];?> (<?php echo $bkash['ac_name'];?>)</option>
+                                         <?php }?>
+                                     </select>
 
-                                     <input type="text" name="other"  placeholder="Bkash/Nagad etc." id="bkash_id" class="form-control " value="" >
                                  </div>
+
+
+
 
                              </div>
                          </div>
+                         <div class="col-sm-6" id="nagad_div">
+                             <div class="form-group row">
+                                 <label for="bank" class="col-sm-3 col-form-label">Nagad</label>
+                                 <div class="col-sm-8">
+                                     <select name="nagad_id" class="form-control bankpayment"  id="nagad_id">
+                                         <option value="">Select Location</option>
+                                         <?php foreach($nagad_list as $nagad){?>
+                                             <option value="<?php echo $nagad['nagad_id']?>"><?php echo $nagad['nagad_no'];?> (<?php echo $nagad['ac_name'];?>)</option>
+                                         <?php }?>
+                                     </select>
+
+                                 </div>
+
+
+
+
+                             </div>
+                         </div>
+
                     </div>
 
 
@@ -156,6 +184,7 @@
                                     <tr>
                                         <th class="text-center"><?php echo display('account_name')?><i class="text-danger">*</i></th>
                                          <th class="text-center"><?php echo display('code')?></th>
+                                         <th class="text-center">Due Amount</th>
                                           <th class="text-center"><?php echo display('amount')?><i class="text-danger">*</i></th>
 <!--                                           <th class="text-center">--><?php //echo display('action')?><!--</th>  -->
                                     </tr>
@@ -173,6 +202,12 @@
 
                                          </td>
                                         <td><input type="text" name="txtCode" value="" class="form-control "  id="txtCode_1" readonly=""></td>
+                                        <td>
+                                            <input type="text" name="balance" value="" class="form-control "  id="balance_1" readonly="">
+                                            <input type="hidden" name="customer_id" value="" class="form-control "  id="customer_id_1" readonly="">
+                                        </td>
+
+
                                         <td><input type="number" name="txtAmount" value="" class="form-control total_price text-right"  id="txtAmount_1" onkeyup="dbtvouchercalculation(1)" required="">
                                            </td>
 <!--                                       <td>-->
@@ -187,7 +222,7 @@
                                       <td >
                                            
                                         </td>
-                                        <td colspan="1" class="text-right"><label  for="reason" class="  col-form-label"><?php echo display('total') ?></label>
+                                        <td colspan="2" class="text-right"><label  for="reason" class="  col-form-label"><?php echo display('total') ?></label>
                                            </td>
                                         <td class="text-right">
                                             <input type="text" id="grandTotal" class="form-control text-right " name="grand_total" value="" readonly="readonly" />
@@ -215,4 +250,64 @@
 </div>
 </section>
 </div>
+
+<script type="text/javascript">
+
+
+    "use strict";
+    function bank_paymet(val){
+        if(val==2){
+            var style = 'block';
+            document.getElementById('bank_id').setAttribute("required", true);
+        }else{
+            var style ='none';
+            document.getElementById('bank_id').removeAttribute("required");
+        }
+
+        document.getElementById('bank_div').style.display = style;
+        if(val==3){
+            var style = 'block';
+            document.getElementById('bkash_id').setAttribute("required", true);
+        }else{
+            var style ='none';
+            document.getElementById('bkash_id').removeAttribute("required");
+        }
+
+        document.getElementById('bkash_div').style.display = style;
+        if(val==4){
+            var style = 'block';
+            document.getElementById('nagad_id').setAttribute("required", true);
+        }else{
+            var style ='none';
+            document.getElementById('nagad_id').removeAttribute("required");
+        }
+
+        document.getElementById('nagad_div').style.display = style;
+    }
+
+
+    $( document ).ready(function() {
+        var paytype = $("#editpayment_type").val();
+        if(paytype == 2){
+            $("#bank_div").css("display", "block");
+        }else{
+            $("#bank_div").css("display", "none");
+        }
+
+        if(paytype == 3){
+            $("#bkash_div").css("display", "block");
+        }else{
+            $("#bkash_div").css("display", "none");
+        }
+
+        if(paytype == 4){
+            $("#nagad_div").css("display", "block");
+        }else{
+            $("#nagad_div").css("display", "none");
+        }
+
+        $(".bankpayment").css("width", "100%");
+    });
+
+</script>
 

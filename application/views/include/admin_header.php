@@ -870,16 +870,6 @@ $birthday = $CI->Reports->birthday_noti();
 
 
 
-                        <?php } ?>
-                          <?php if($this->permission1->method('purchase_expired_report_category_wise','read')->access()){ ?>
-                            <li class="treeview <?php if ($this->uri->segment('2') == ("purchase_expired_report_category_wise")){
-                                echo "active";
-                            } else {
-                                echo " ";
-                            }?>"><a href="<?php echo base_url('Admin_dashboard/purchase_expired_report_category_wise') ?>">Purchase Expired Report Category Wise</a></li>
-
-
-
 
                         <?php } ?>
                         <?php if($this->permission1->method('purchase_warrenty_report','create')->access()){ ?>
@@ -1094,6 +1084,7 @@ $birthday = $CI->Reports->birthday_noti();
                                             echo " ";
                                         }?>"><a href="<?php echo base_url('accounts/bank_book') ?>"><?php echo display('bank_book'); ?></a></li>
                                     <?php } ?>
+
                                     <?php if($this->permission1->method('general_ledger','read')->access()){ ?>
                                         <li class="treeview <?php if ($this->uri->segment('2') == ("general_ledger")){
                                             echo "active";

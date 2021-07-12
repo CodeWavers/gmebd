@@ -101,19 +101,19 @@
 
                                 </div>
 
-                                <div class="form-group row">
-                                    <label for="employee" class="col-sm-4 col-form-label">Sale By
-                                        <i class="text-danger">*</i></label>
-                                    <div class="col-sm-8">
-                                        <select name="employee_id" class="form-control" required="">
-                                            <option value="<?php echo $sales_by?>"> <?php echo $sales_first_name.' '.$sales_last_name?></option>
-                                            <?php foreach($employee_list as $employee){?>
-                                                <option value="<?php echo $employee['id']?>"><?php echo $employee['first_name'].' '.$employee['last_name']?></option>
-                                            <?php } ?>
-
-                                        </select>
-                                    </div>
-                                </div>
+<!--                                <div class="form-group row">-->
+<!--                                    <label for="employee" class="col-sm-4 col-form-label">Sale By-->
+<!--                                        <i class="text-danger">*</i></label>-->
+<!--                                    <div class="col-sm-8">-->
+<!--                                        <select name="employee_id" class="form-control" required="">-->
+<!--                                            <option value="--><?php //echo $sales_by?><!--"> --><?php //echo $sales_first_name.' '.$sales_last_name?><!--</option>-->
+<!--                                            --><?php //foreach($employee_list as $employee){?>
+<!--                                                <option value="--><?php //echo $employee['id']?><!--">--><?php //echo $employee['first_name'].' '.$employee['last_name']?><!--</option>-->
+<!--                                            --><?php //} ?>
+<!---->
+<!--                                        </select>-->
+<!--                                    </div>-->
+<!--                                </div>-->
 
                                 <div class="form-group row">
                                     <label for="deliver_type" class="col-sm-4 col-form-label">Delivery Type <i class="text-danger">*</i></label>

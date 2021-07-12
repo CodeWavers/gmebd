@@ -87,23 +87,36 @@
                                 <input class="form-control" name="phone" id="phone" type="number" placeholder="<?php echo display('phone') ?>"  min="0" tabindex="2">
                             </div>
                         </div>
-                         <div class="form-group row">
+                         <div class="form-group row " id="multi_email">
+                             <div class="r_email" >
                             <label for="email" class="col-sm-4 col-form-label"><?php echo display('email') ?> <i class="text-danger"></i></label>
-                            <div class="col-sm-8">
-                                <input class="form-control" name="email" id="email" type="email" placeholder="<?php echo display('email') ?>"   tabindex="2">
+                            <div class="col-sm-6" style="padding-bottom:10px ">
+                                <input class="form-control" name="email[]" id="email" type="email" placeholder="<?php echo display('email') ?>"   tabindex="2">
+
                             </div>
+
+                             <div class="col-sm-1">
+                                 <button   class='btn btn-primary text-right add_cheque' type='button'><i class='fa fa-plus-circle'></i></button>
+                             </div>
+                             </div>
                         </div>
-                         <div class="form-group row">
-                            <label for="emailaddress" class="col-sm-4 col-form-label"><?php echo display('email').' '.display('address'); ?> <i class="text-danger"></i></label>
-                            <div class="col-sm-8">
-                                <input class="form-control" name="emailaddress" id="emailaddress" type="email" placeholder="<?php echo display('email').' '.display('address') ?>"  >
-                            </div>
-                        </div>
+<!--                         <div class="form-group row">-->
+<!--                            <label for="emailaddress" class="col-sm-4 col-form-label">--><?php //echo display('email').' '.display('address'); ?><!-- <i class="text-danger"></i></label>-->
+<!--                            <div class="col-sm-8">-->
+<!--                                <input class="form-control" name="emailaddress" id="emailaddress" type="email" placeholder="--><?php //echo display('email').' '.display('address') ?><!--"  >-->
+<!--                            </div>-->
+<!--                        </div>-->
 
                           <div class="form-group row">
-                            <label for="contact" class="col-sm-4 col-form-label"><?php echo display('contact'); ?> <i class="text-danger"></i></label>
+                            <label for="contact" class="col-sm-4 col-form-label"><?php echo display('contact'); ?> Person Name<i class="text-danger"></i></label>
                             <div class="col-sm-8">
-                                <input class="form-control" name="contact" id="contact" type="text" placeholder="<?php echo display('contact') ?>"  >
+                                <input class="form-control" name="contact" id="contact" type="text" placeholder="<?php echo display('contact') ?> Person Name"  >
+                            </div>
+                        </div>
+                            <div class="form-group row">
+                            <label for="contact" class="col-sm-4 col-form-label"><?php echo display('contact'); ?> Person Mobile<i class="text-danger"></i></label>
+                            <div class="col-sm-8">
+                                <input class="form-control" name="contact_mobile" id="contact_mobile" type="text" placeholder="<?php echo display('contact') ?> Person Mobile"  >
                             </div>
                         </div>
 
@@ -117,6 +130,12 @@
                             <label for="city" class="col-sm-4 col-form-label"><?php echo display('city'); ?> <i class="text-danger"></i></label>
                             <div class="col-sm-8">
                                 <input class="form-control" name="city" id="city" type="text" placeholder="<?php echo display('city') ?>"  >
+                            </div>
+                        </div>
+                            <div class="form-group row">
+                            <label for="website" class="col-sm-4 col-form-label">Website</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" name="website" id="website" type="text" placeholder="Website"  >
                             </div>
                         </div>
                          
@@ -164,9 +183,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="previous_balance" class="col-sm-4 col-form-label"><?php echo display('previous_balance') ?></label>
+                            <label for="previous_balance" class="col-sm-4 col-form-label">Supplier Debit Balance</label>
                             <div class="col-sm-8">
-                                <input class="form-control" name="previous_balance" id="previous_balance" type="text" min="0" placeholder="<?php echo display('previous_balance') ?>" tabindex="5">
+                                <input class="form-control" name="previous_balance" id="previous_balance" type="text" min="0" placeholder="Supplier Debit Balance" tabindex="5">
                             </div>
                         </div>
                     </div>
@@ -237,6 +256,38 @@
     </section>
 </div>
 <!-- Add new supplier end -->
+<script type="text/javascript">
+    $(document).ready(function(){
 
+        $(".add_cheque").click(function(){
+            $("#multi_email").append("     <div class=\"r_email\" style=\"padding-bottom:10px \">\n" +
+                "                            <label for=\"email\" class=\"col-sm-4 col-form-label\"></label>\n" +
+                "                            <div class=\"col-sm-6\" style=\"padding-bottom:10px\" >\n" +
+                "                                <input class=\"form-control\" name=\"email[]\" id=\"email\" type=\"email\" placeholder=\"<?php echo display('email') ?>\"   tabindex=\"2\">\n" +
+                "\n" +
+                "                            </div>\n" +
+                "\n" +
+                "                             <div class=\"col-sm-1\">\n" +
+                "                                 <button   class='btn btn-danger text-right remove_cheque' type='button'><i class='fa fa-minus-circle'></i></button>\n" +
+                "                             </div>\n" +
+                "                             </div> ");
+        });
+
+
+
+
+
+    });
+
+
+
+    $("body").on("click",".remove_cheque",function(e){
+        $(this).parents('.r_email').remove();
+        //the above method will remove the user_data div
+    });
+
+
+
+</script>
 
 

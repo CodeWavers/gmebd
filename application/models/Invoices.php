@@ -514,7 +514,7 @@ class Invoices extends CI_Model {
         if(!empty($bkash_id)){
             $nagadname = $this->db->select('nagad_no')->from('nagad_add')->where('nagad_id',$nagad_id)->get()->row()->nagad_no;
 
-            $nagadcoaid = $this->db->select('HeadCode')->from('acc_coa')->where('HeadName',$bkashname)->get()->row()->HeadCode;
+            $nagadcoaid = $this->db->select('HeadCode')->from('acc_coa')->where('HeadName',$nagadname)->get()->row()->HeadCode;
         }else{
             $nagadcoaid='';
         }
@@ -1076,11 +1076,11 @@ class Invoices extends CI_Model {
 
     //Retrieve invoice Edit Data
     public function retrieve_invoice_editdata($invoice_id) {
-        $this->db->select('a.*,u.*, sum(c.quantity) as sum_quantity, a.total_tax as taxs,a. prevous_due,b.customer_name,c.*,c.tax as total_tax,c.product_id,d.product_name,d.product_model,d.tax,d.unit,d.*');
+        $this->db->select('a.*, sum(c.quantity) as sum_quantity, a.total_tax as taxs,a. prevous_due,b.customer_name,c.*,c.tax as total_tax,c.product_id,d.product_name,d.product_model,d.tax,d.unit,d.*');
         $this->db->from('invoice a');
         $this->db->join('customer_information b', 'b.customer_id = a.customer_id');
         $this->db->join('invoice_details c', 'c.invoice_id = a.invoice_id');
-        $this->db->join('employee_history u', 'a.sales_by = u.id');
+       // $this->db->join('employee_history u', 'a.sales_by = u.id');
 
         $this->db->join('product_information d', 'd.product_id = c.product_id');
         $this->db->where('a.invoice_id', $invoice_id);
@@ -1146,7 +1146,7 @@ class Invoices extends CI_Model {
             'invoice_discount'=> $this->input->post('invoice_discount',TRUE),
             'total_discount'  => $this->input->post('total_discount',TRUE),
             'prevous_due'     => $this->input->post('previous',TRUE),
-            'sales_by'     => $this->input->post('employee_id',TRUE),
+           // 'sales_by'     => $this->input->post('employee_id',TRUE),
             'shipping_cost'   => $this->input->post('shipping_cost',TRUE),
             'payment_type'    =>   (!empty($this->input->post('paytype',TRUE))?$this->input->post('paytype',TRUE):null),
             'delivery_type'    =>   (!empty($this->input->post('delivery_type',TRUE))?$this->input->post('delivery_type',TRUE):null),

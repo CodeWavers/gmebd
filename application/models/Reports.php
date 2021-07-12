@@ -587,6 +587,7 @@ class reports extends CI_Model {
         $this->db->join('product_category c', 'c.category_id = b.category_id');
         //$this->db->join('product_purchase d', 'd.purchase_id = a.purchase_id');
 
+
         $this->db->limit($per_page, $page);
         $query = $this->db->get();
         return $query->result();
@@ -598,7 +599,6 @@ class reports extends CI_Model {
         $this->db->join('product_information b', 'b.product_id = a.product_id');
         $this->db->join('product_category c', 'c.category_id = b.category_id');
         //$this->db->join('product_purchase d', 'd.purchase_id = a.purchase_id');
-
         $this->db->limit($per_page, $page);
         $query = $this->db->get();
         return $query->result();
