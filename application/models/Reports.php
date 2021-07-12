@@ -587,18 +587,6 @@ class reports extends CI_Model {
         $this->db->join('product_category c', 'c.category_id = b.category_id');
         //$this->db->join('product_purchase d', 'd.purchase_id = a.purchase_id');
 
-
-        $this->db->limit($per_page, $page);
-        $query = $this->db->get();
-        return $query->result();
-    }
-      public function purchase_expired_report_category_wise($per_page = null, $page = null) {
-        $this->db->select('b.product_name, b.product_model, a.quantity,a.total_amount,a.warrenty_date, a.expired_date, c.category_name');
-        //$this->db->group_by('b.product_id, c.category_id');
-        $this->db->from('product_purchase_details a');
-        $this->db->join('product_information b', 'b.product_id = a.product_id');
-        $this->db->join('product_category c', 'c.category_id = b.category_id');
-        //$this->db->join('product_purchase d', 'd.purchase_id = a.purchase_id');
         $this->db->limit($per_page, $page);
         $query = $this->db->get();
         return $query->result();
@@ -675,40 +663,15 @@ class reports extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
-    
  public function filter_purchase_warrenty_report_category_wise($category = null, $from_date = null, $to_date = null, $per_page = null, $page = null) {
         $dateRange = "a.warrenty_date BETWEEN '$from_date' AND '$to_date'";
-        $this->db->select('b.product_name, b.product_model,a.quantity,a.total_amount, a.warrenty_date, c.category_name');
-        // $this->db->group_by('b.product_id, c.category_id');
+        $this->db->select('b.product_name, b.product_model,SUM(a.quantity) as quantity, SUM(a.total_amount) as total_amount, a.warrenty_date, c.category_name');
+        $this->db->group_by('b.product_id, c.category_id');
         $this->db->from('product_purchase_details a');
         $this->db->join('product_information b', 'b.product_id = a.product_id');
 
         $this->db->join('product_category c', 'c.category_id = b.category_id');
-       // $this->db->join('product_purchase d', 'd.purchase_id = a.purchase_id');
-
-        if ($category) {
-            $this->db->where('b.category_id', $category);
-        }
-        if ($category && $from_date && $to_date) {
-            $this->db->where('b.category_id', $category);
-            $this->db->where($dateRange);
-        }
-        if ($from_date && $to_date) {
-            $this->db->where($dateRange);
-        }
-        $this->db->limit($per_page, $page);
-        $query = $this->db->get();
-        return $query->result();
-    }
-    public function filter_purchase_expired_report_category_wise($category = null, $from_date = null, $to_date = null, $per_page = null, $page = null) {
-        $dateRange = "a.expired_date BETWEEN '$from_date' AND '$to_date'";
-        $this->db->select('b.product_name, b.product_model,a.quantity, a.total_amount, a.expired_date, c.category_name');
-        // $this->db->group_by('b.product_id, c.category_id');
-        $this->db->from('product_purchase_details a');
-        $this->db->join('product_information b', 'b.product_id = a.product_id');
-
-        $this->db->join('product_category c', 'c.category_id = b.category_id');
-        // $this->db->join('product_purchase d', 'd.purchase_id = a.purchase_id');
+        $this->db->join('product_purchase d', 'd.purchase_id = a.purchase_id');
 
         if ($category) {
             $this->db->where('b.category_id', $category);
