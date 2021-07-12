@@ -731,6 +731,31 @@ class Lreport extends CI_Model
         $reportList = $CI->parser->parse('report/purchase_warrenty_report_category_wise', $data, true);
         return $reportList;
     }
+    public function purchase_expired_report_category_wise($links = null, $per_page = null, $page = null)
+    {
+        $CI = &get_instance();
+        $CI->load->model('Reports');
+        $CI->load->model('Web_settings');
+        $CI->load->library('occational');
+        $CI->load->model('Categories');
+        $category_list = $CI->Categories->category_list_product();
+        $purchase_expired_report_category_wise = $CI->Reports->purchase_expired_report_category_wise($per_page, $page);
+        $currency_details = $CI->Web_settings->retrieve_setting_editdata();
+        $company_info = $CI->Reports->retrieve_company();
+        $data = array(
+            'title' =>'Category Wise Expired Report',
+            'category_list' => $category_list,
+            'purchase_expired_report_category_wise' => $purchase_expired_report_category_wise,
+            'company_info' => $company_info,
+            'currency' => $currency_details[0]['currency'],
+            'position' => $currency_details[0]['currency_position'],
+            'links' => $links,
+            'software_info' => $currency_details,
+            'company' => $company_info,
+        );
+        $reportList = $CI->parser->parse('report/purchase_expired_report_category_wise', $data, true);
+        return $reportList;
+    }
     public function purchase_report_shelf_wise($links = null, $per_page = null, $page = null)
     {
         $CI = &get_instance();
@@ -881,6 +906,33 @@ public function filter_purchase_warrenty_report_category_wise($category = null, 
             'company'           => $company_info,
         );
         $reportList = $CI->parser->parse('report/purchase_warrenty_report_category_wise', $data, true);
+        return $reportList;
+    }
+    public function filter_purchase_expired_report_category_wise($category = null, $from_date = null, $to_date = null, $links = null) {
+        $CI = & get_instance();
+        $CI->load->model('Reports');
+        $CI->load->model('Web_settings');
+        $CI->load->library('occational');
+        $CI->load->model('Categories');
+        $category_list = $CI->Categories->category_list_product();
+        $filter_purchase_expired_report_category_wise = $CI->Reports->filter_purchase_expired_report_category_wise($category, $from_date, $to_date);
+
+        $currency_details = $CI->Web_settings->retrieve_setting_editdata();
+        $company_info = $CI->Reports->retrieve_company();
+        $data = array(
+            'title'             => 'Expired wise category report',
+            'category_list'     => $category_list,
+            'from_date'         => $from_date,
+            'to_date'           => $to_date,
+            'purchase_expired_report_category_wise' => $filter_purchase_expired_report_category_wise,
+            'company_info'      => $company_info,
+            'currency'          => $currency_details[0]['currency'],
+            'position'          => $currency_details[0]['currency_position'],
+            'links'             => $links,
+            'software_info'     => $currency_details,
+            'company'           => $company_info,
+        );
+        $reportList = $CI->parser->parse('report/purchase_expired_report_category_wise', $data, true);
         return $reportList;
     }
     public function filter_purchase_report_shelf_wise($product=null,$category = null,$from_date = null, $to_date = null, $links = null) {
