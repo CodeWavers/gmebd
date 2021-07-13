@@ -591,6 +591,18 @@ class reports extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
+    public function purchase_expired_report_category_wise($per_page = null, $page = null) {
+        $this->db->select('b.product_name, b.product_model, a.quantity,a.total_amount,a.warrenty_date, a.expired_date, c.category_name');
+        //$this->db->group_by('b.product_id, c.category_id');
+        $this->db->from('product_purchase_details a');
+        $this->db->join('product_information b', 'b.product_id = a.product_id');
+        $this->db->join('product_category c', 'c.category_id = b.category_id');
+        //$this->db->join('product_purchase d', 'd.purchase_id = a.purchase_id');
+
+        $this->db->limit($per_page, $page);
+        $query = $this->db->get();
+        return $query->result();
+    }
     public function purchase_report_shelf_wise() {
         $this->db->select('b.product_name, b.product_model,a.rate as purchase_price,b.price as sales_price,SUM(a.quantity) as quantity,SUM(a.total_amount) as total_amount,a.warehouse, c.category_name');
         $this->db->group_by('a.warehouse,b.id,c.category_id,b.product_id');
@@ -598,7 +610,7 @@ class reports extends CI_Model {
         $this->db->join('product_information b', 'b.product_id = a.product_id');
         //$this->db->join('invoice_details e', 'e.product_id = a.product_id');
         $this->db->join('product_category c', 'c.category_id = b.category_id');
-         //$this->db->group_by('b.product_id');
+        //$this->db->group_by('b.product_id');
         //$this->db->where('a.quantity >',0);
 
         $this->db->limit('10000');
@@ -663,15 +675,40 @@ class reports extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
- public function filter_purchase_warrenty_report_category_wise($category = null, $from_date = null, $to_date = null, $per_page = null, $page = null) {
+
+    public function filter_purchase_warrenty_report_category_wise($category = null, $from_date = null, $to_date = null, $per_page = null, $page = null) {
         $dateRange = "a.warrenty_date BETWEEN '$from_date' AND '$to_date'";
-        $this->db->select('b.product_name, b.product_model,SUM(a.quantity) as quantity, SUM(a.total_amount) as total_amount, a.warrenty_date, c.category_name');
-        $this->db->group_by('b.product_id, c.category_id');
+        $this->db->select('b.product_name, b.product_model,a.quantity,a.total_amount, a.warrenty_date, c.category_name');
+        // $this->db->group_by('b.product_id, c.category_id');
         $this->db->from('product_purchase_details a');
         $this->db->join('product_information b', 'b.product_id = a.product_id');
 
         $this->db->join('product_category c', 'c.category_id = b.category_id');
-        $this->db->join('product_purchase d', 'd.purchase_id = a.purchase_id');
+        // $this->db->join('product_purchase d', 'd.purchase_id = a.purchase_id');
+
+        if ($category) {
+            $this->db->where('b.category_id', $category);
+        }
+        if ($category && $from_date && $to_date) {
+            $this->db->where('b.category_id', $category);
+            $this->db->where($dateRange);
+        }
+        if ($from_date && $to_date) {
+            $this->db->where($dateRange);
+        }
+        $this->db->limit($per_page, $page);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    public function filter_purchase_expired_report_category_wise($category = null, $from_date = null, $to_date = null, $per_page = null, $page = null) {
+        $dateRange = "a.expired_date BETWEEN '$from_date' AND '$to_date'";
+        $this->db->select('b.product_name, b.product_model,a.quantity, a.total_amount, a.expired_date, c.category_name');
+        // $this->db->group_by('b.product_id, c.category_id');
+        $this->db->from('product_purchase_details a');
+        $this->db->join('product_information b', 'b.product_id = a.product_id');
+
+        $this->db->join('product_category c', 'c.category_id = b.category_id');
+        // $this->db->join('product_purchase d', 'd.purchase_id = a.purchase_id');
 
         if ($category) {
             $this->db->where('b.category_id', $category);
@@ -734,7 +771,7 @@ class reports extends CI_Model {
         $this->db->join('product_category c', 'c.category_id = b.category_id');
         // $this->db->join('product_purchase d', 'd.purchase_id = a.purchase_id');
         // $this->db->where(array('a.product_id' => $product , 'a.shelf_id' => $category));
-       // $this->db->where('a.quantity >',0);
+        // $this->db->where('a.quantity >',0);
         if ($product) {
             $this->db->where('a.product_id', $product);
             $this->db->or_where('b.product_id_two', $product);
@@ -2414,12 +2451,12 @@ public function retrieve_dateWise_money_receipt($from_date, $to_date) {
             $nagadcoaid = '';
         }
 
-       // $cus=$this->db->query('SELECT * FROM `customer_information` WHERE '.$customer_id.'')->row();
+        // $cus=$this->db->query('SELECT * FROM `customer_information` WHERE '.$customer_id.'')->row();
         $cusifo = $this->db->select('customer_name')->from('customer_information')->where('customer_id',$customer_id)->get()->row();
         // echo '<pre>';print_r($cusifo);
         $headn = $customer_id.'-'.$cusifo->customer_name;
         $coainfo = $this->db->select('*')->from('acc_coa')->where('HeadName',$headn)->get()->row();
-    //    $coainfo=("SELECT * FROM `acc_coa` WHERE `HeadName` ='.$headn.'");
+        //    $coainfo=("SELECT * FROM `acc_coa` WHERE `HeadName` ='.$headn.'");
         $customer_headcode = $coainfo->HeadCode;
 
         if ($status==1){
@@ -2440,7 +2477,7 @@ public function retrieve_dateWise_money_receipt($from_date, $to_date) {
                     //'paytype'=>$paytype
 
                 );
-              //  echo '<pre>';print_r($data3);exit();
+                //  echo '<pre>';print_r($data3);exit();
                 $ddd=$this->db->insert('acc_transaction', $data3);
             }
             if ($paytype==2) {
@@ -2514,27 +2551,27 @@ public function retrieve_dateWise_money_receipt($from_date, $to_date) {
 //                    'IsAppove'       => 1
 //                );
 //                $ddd=$this->db->insert('acc_transaction', $cc);
-          //  }else {
+            //  }else {
 
-                $data = array(
-                    'VNo' => $invoice_id,
-                    'cheque_id' => $cheque_id,
-                    'Vtype' => 'INV',
-                    'VDate' => $createdate,
-                    'COAID' => $customer_headcode,
-                    'Narration' => 'Customer credit for Paid Amount For Customer Invoice NO- ' . $invoice_no . ' Customer- ' . $cusifo->customer_name,
-                    'Debit' => 0,
-                    'Credit' => $credit,
-                    'IsPosted' => 1,
-                    'CreateBy' => $createby,
-                    'CreateDate' => $createdate,
-                    'IsAppove' => 1
-                );
+            $data = array(
+                'VNo' => $invoice_id,
+                'cheque_id' => $cheque_id,
+                'Vtype' => 'INV',
+                'VDate' => $createdate,
+                'COAID' => $customer_headcode,
+                'Narration' => 'Customer credit for Paid Amount For Customer Invoice NO- ' . $invoice_no . ' Customer- ' . $cusifo->customer_name,
+                'Debit' => 0,
+                'Credit' => $credit,
+                'IsPosted' => 1,
+                'CreateBy' => $createby,
+                'CreateDate' => $createdate,
+                'IsAppove' => 1
+            );
 
 
-                // echo '<pre>';print_r($data);exit();
-                $dd = $this->db->insert('acc_transaction', $data);
-           // }
+            // echo '<pre>';print_r($data);exit();
+            $dd = $this->db->insert('acc_transaction', $data);
+            // }
         }
         //exit();
 

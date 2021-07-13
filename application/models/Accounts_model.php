@@ -565,7 +565,7 @@ class Accounts_model extends CI_Model {
             'COAID'          =>  $bkashcoaid,
             'customer_id'    =>  $customer_id,
             'remark'        =>$Narration,
-            'other_name'    =>$other_name
+            'bkash_id'          =>  $bkashname,
 
         );
         $data4=array(
@@ -575,6 +575,7 @@ class Accounts_model extends CI_Model {
             'date'          =>  $VDate,
             'COAID'          =>  $nagadcoaid,
             'customer_id'          =>  $customer_id,
+            'nagad_id'          =>  $nagadname,
             'remark'        =>$Narration
 
         );
