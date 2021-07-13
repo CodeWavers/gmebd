@@ -137,24 +137,24 @@
                                                     <?php
                                                         switch ($data['pay_type']) {
                                                             case '1':
-                                                                echo 'Bank Cash In';
+                                                                echo 'Cash in hand';
                                                                 break;
 
                                                             case '2':
-                                                                echo 'Bkash Cash In';
+                                                                echo 'Cash in bank';
                                                                 break;
 
                                                             case '3':
-                                                                echo 'Nagad Cash In';
+                                                                echo 'Cash In bKash';
                                                                 break;
 
                                                             case '4':
-                                                                echo 'Rocket Cash In';
+                                                                echo 'Cash in Nagad';
                                                                 break;
                                                         }
                                                     ?>
                                                 </td>
-                                                <td><?php echo $data['Credit']?></td>
+                                                <td><?php echo $currency.' '.$data['Credit']?></td>
                                             </tr>
                                             <?php } ?>
                                         <?php } else {

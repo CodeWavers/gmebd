@@ -2077,7 +2077,6 @@ public function filter_purchase_warrenty_report_category_wise($category = null, 
             'title'        => "Money Receipt Report",
             'all_data'     => $mr_data    ,
             'currency'     => $currency_details[0]['currency'],
-            'position'     => $currency_details[0]['currency_position'],
             'software_info'=> $currency_details,
             'company'      => $company_info,
         );
