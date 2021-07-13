@@ -1,37 +1,4 @@
 
-Skip to content
-Pull requests
-Issues
-Marketplace
-Explore
-@CodeWavers
-CodeWavers /
-gmebd
-Private
-
-1
-0
-
-    0
-
-Code
-Issues
-Pull requests
-Actions
-Projects
-Security
-Insights
-
-    Settings
-
-gmebd/assets/css/custom.css
-@mdarmancse
-mdarmancse Add supplier changes with given requirements
-Latest commit ed61c23 2 days ago
-History
-1 contributor
-5629 lines (4736 sloc) 101 KB
-
 
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i);
 @import url(https://fonts.googleapis.com/css?family=Alegreya+Sans:100,100i,300,300i,400,400i,500,500i,700,700i,800,800i,900,900i);
@@ -5553,7 +5520,7 @@ pre .arg {
     background-repeat: no-repeat !important;
     /*padding: 05px !important;*/
     /*  background-attachment: fixed;*/
-    background-position: 18ch 21em !important;
+    background-position: 18ch 27em !important;
 
     background-size: 64% 51% !important;
     -webkit-print-color-adjust: exact ;
@@ -5581,7 +5548,7 @@ pre .arg {
     background-repeat: no-repeat !important;
     /* padding: 05px !important; */
     /*  background-attachment: fixed;*/
-    background-position: 18ch 21em !important;
+    background-position: 18ch 22em !important;
 
     background-size: 62% 53% !important;
     -webkit-print-color-adjust: exact  ;
@@ -5659,17 +5626,4 @@ pre .arg {
 }
 
 
-    © 2021 GitHub, Inc.
-    Terms
-    Privacy
-    Security
-    Status
-    Docs
-
-    Contact GitHub
-    Pricing
-    API
-    Training
-    Blog
-    About
 

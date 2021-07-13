@@ -866,11 +866,18 @@ $birthday = $CI->Reports->birthday_noti();
                             } else {
                                 echo " ";
                             }?>"><a href="<?php echo base_url('Admin_dashboard/purchase_warrenty_report_category_wise') ?>">Purchase Warrenty Report Category Wise</a></li>
+                            <?php } ?>
+
+                        <?php if($this->permission1->method('purchase_expired_report_category_wise','read')->access()){ ?>
+                            <li class="treeview <?php if ($this->uri->segment('2') == ("purchase_expired_report_category_wise")){
+                                echo "active";
+                            } else {
+                                echo " ";
+                            }?>"><a href="<?php echo base_url('Admin_dashboard/purchase_expired_report_category_wise') ?>">Purchase Expired Report Category Wise</a></li>
+                            <?php } ?>
 
 
 
-
-                        <?php } ?>
                         <?php if($this->permission1->method('purchase_warrenty_report','create')->access()){ ?>
                             <li class="treeview <?php if ($this->uri->segment('2') == ("purchase_warrenty_report")){
                                 echo "active";

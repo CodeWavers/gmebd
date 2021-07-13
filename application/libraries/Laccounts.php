@@ -110,7 +110,8 @@ class Laccounts extends CI_Model{
           'credit_inword'=>$credit_inword,
             'currency'         => $currency_details[0]['currency'],
             'cheque_no'=>$mr_detail['data'][0]['cheque_no'],
-            'other'=>$mr_detail['data'][0]['other_name'],
+            'bkash_no'=>$mr_detail['data'][0]['bkash_id'],
+            'nagad_no'=>$mr_detail['data'][0]['nagad_id'],
             'pay_type'=>$mr_detail['data'][0]['pay_type'],
           //'user'=>$user
           //  'cod'=>$sumDebit
