@@ -870,7 +870,6 @@ $birthday = $CI->Reports->birthday_noti();
 
 
 
-
                         <?php } ?>
                         <?php if($this->permission1->method('purchase_warrenty_report','create')->access()){ ?>
                             <li class="treeview <?php if ($this->uri->segment('2') == ("purchase_warrenty_report")){
