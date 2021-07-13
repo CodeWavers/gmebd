@@ -20,6 +20,9 @@ $Web_settings = $CI->Web_settings->retrieve_setting_editdata();
     th {
         height: 70px;
     }
+    /*.col-sm-8, .col-sm-4{
+        flex: 1;
+    }*/
 </style>
 
 <script src="<?php echo base_url() ?>my-assets/js/admin_js/invoice_onloadprint.js" type="text/javascript"></script>
@@ -74,8 +77,13 @@ $Web_settings = $CI->Web_settings->retrieve_setting_editdata();
 
                             <div class="panel-body" >
 
+
+                                <div class="row" style="display: flex; ">
+                                    <div class="col-sm-8  invoice-address" style="padding-top: 15px;">
+
                                 <div class="row" >
                                     <div class="col-sm-8  invoice-address">
+
                                         <h2 class="m-t-0">Invoice</h2>
                                         <div><?php echo display('invoice_no') ?>: {invoice_no}</div>
                                         <div class="m-b-15">Date: {final_date}</div>
@@ -112,7 +120,7 @@ $Web_settings = $CI->Web_settings->retrieve_setting_editdata();
                                         <br>
                                         <!--                                    <span class="label label-success-outline m-r-15 p-10" >--><?php //echo display('billing_from') ?><!--</span>-->
                                         <address class="">
-                                            <strong class="company_name_p">{company_name}</strong><br>
+                                            <strong class="company_name_p" style="margin-left: 70px;margin-top: 1rem">{company_name}</strong><br>
                                             <address class="text-left" style="margin-left: 90px;margin-top: 1rem">
                                                 {address}<br>
                                                 <abbr>Service:</abbr> {mobile}
