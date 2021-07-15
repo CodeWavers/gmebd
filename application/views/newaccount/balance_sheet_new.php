@@ -315,6 +315,29 @@
                                             </tr>
                                         <?php } ?>
                                         <?php } ?>
+                                        <tr>
+                                            <td>Cash At Nagad</td>
+                                            <td></td>
+                                            <td></td>
+                                            <?php if($cash_nagad):?>
+                                                <td><?php echo  number_format($cash_nagad,2)?></td>
+                                            <?php else:?>
+                                                <td><?php echo number_format('0',2)?></td>
+                                            <?php endif;?>
+                                        </tr>
+
+
+                                        <?php foreach ($cash_nagad_c as $i){ ?>
+
+                                        <?php if ($i['amount'] > 0 ){ ?>
+                                            <tr>
+                                                <td></td>
+                                                <td><?php echo $i['HeadName'] ?></td>
+                                                <td><?php echo $i['amount']?></td>
+                                                <td></td>
+                                            </tr>
+                                        <?php } ?>
+                                        <?php } ?>
 
 
                                         <tr>
@@ -328,11 +351,6 @@
                                                 <td><?php echo number_format('0',2)?></td>
                                             <?php endif;?>
                                         </tr>
-
-
-
-
-
                                         <tr>
                                             <td><b>Fixed Assets</b></td>
                                             <td></td>
