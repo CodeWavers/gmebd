@@ -1197,12 +1197,19 @@ class Accounts_model extends CI_Model {
         $acc_rcv_c=$this->db->select('*')->from('acc_coa a')->join('acc_transaction b','a.HeadCode=b.COAID')->where('HeadType','A')->like('COAID','102030')->group_by('a.HeadCode')->get()->result();
         $cash_bank_c=$this->db->select('*')->from('acc_coa a')->join('acc_transaction b','a.HeadCode=b.COAID')->where('HeadType','A')->like('COAID','10201020')->group_by('a.HeadCode')->get()->result();
         $cash_bkash_c=$this->db->select('*')->from('acc_coa a')->join('acc_transaction b','a.HeadCode=b.COAID')->where('HeadType','A')->like('COAID','10201030')->group_by('a.HeadCode')->get()->result();
+
+        $cash_nagad_c=$this->db->select('*')->from('acc_coa a')->join('acc_transaction b','a.HeadCode=b.COAID')->where('HeadType','A')->like('COAID','10201040')->group_by('a.HeadCode')->get()->result();
+
         $fixed_assets_c=$this->db->select('*')->from('acc_coa a')->join('acc_transaction b','a.HeadCode=b.COAID')->where('HeadType','A')->like('COAID','1030')->group_by('a.HeadCode')->get()->result();
 
         $cash_eq=$this->db->select('(sum(debit)-sum(credit)) as cash_eq')->from('acc_transaction')->like('COAID','102010')->get()->result_array();
         $cash_hand=$this->db->select('(sum(debit)-sum(credit)) as cash_hand')->from('acc_transaction')->like('COAID','1020101')->get()->result_array();
         $cash_bank=$this->db->select('(sum(debit)-sum(credit)) as cash_bank')->from('acc_transaction')->like('COAID','1020102')->get()->result_array();
         $cash_bkash=$this->db->select('(sum(debit)-sum(credit)) as cash_bkash')->from('acc_transaction')->like('COAID','1020103')->get()->result_array();
+
+          $cash_nagad=$this->db->select('(sum(debit)-sum(credit)) as cash_nagad')->from('acc_transaction')->like('COAID','1020103')->get()->result_array();
+
+
         $cash_eq_c=$this->db->select('*,(sum(b.debit)-sum(b.credit)) as total_debit')->from('acc_coa a')->join('acc_transaction b','a.HeadCode=b.COAID')->where('HeadType','A')->like('COAID','102010')->get()->result();
         $cash_hand_c=$this->db->select('*,(sum(b.debit)-sum(b.credit)) as total_debit')->from('acc_coa a')->join('acc_transaction b','a.HeadCode=b.COAID')->where('HeadType','A')->like('COAID','10201010')->get()->result();
 
@@ -1304,6 +1311,21 @@ class Accounts_model extends CI_Model {
 
         }
 
+
+        foreach($cash_nagad_c as $i){
+
+            $amount=$this->db->select('sum(debit)-sum(credit) as amount')->from('acc_transaction')->where('COAID',$i->COAID)->get()->row();
+
+
+            $arr_cash_nagad[]=array(
+                'HeadName'=>$i->HeadName,
+                'amount'=>$amount->amount
+
+
+            );
+
+        }
+
         foreach($fixed_assets_c as $i){
 
             $amount=$this->db->select('sum(debit)-sum(credit) as amount')->from('acc_transaction')->where('COAID',$i->COAID)->get()->row();
@@ -1352,10 +1374,12 @@ class Accounts_model extends CI_Model {
             'cash_hand'=>$cash_hand[0]['cash_hand'],
             'cash_bank'=>$cash_bank[0]['cash_bank'],
             'cash_bkash'=>$cash_bkash[0]['cash_bkash'],
+            'cash_nagad'=>$cash_nagad[0]['cash_nagad'],
             'cash_eq_c'=>$cash_eq_c,
             'cash_hand_c'=>$cash_hand_c,
             'cash_bank_c'=>$arr_cash_bank,
             'cash_bkash_c'=>$arr_cash_bkash,
+            'cash_nagad_c'=>$arr_cash_nagad,
             'emp_led_c'=>$arr_em_led,
             'acc_rcv_c'=>$arr_ac_rcv,
         );
