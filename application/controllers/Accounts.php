@@ -895,12 +895,15 @@ class Accounts extends CI_Controller {
         $data['cash_eq']  =    $get_profit['cash_eq'];
         $data['cash_hand']  =    $get_profit['cash_hand'];
         $data['cash_bkash']  =    $get_profit['cash_bkash'];
+
+        $data['cash_nagad']  =    $get_profit['cash_nagad'];
         $data['cash_bank']  =    $get_profit['cash_bank'];
         $data['emp_led_c']  =    $get_profit['emp_led_c'];
         $data['acc_rcv_c']  =    $get_profit['acc_rcv_c'];
         $data['cash_eq_c']  =    $get_profit['cash_eq_c'];
         $data['cash_hand_c']  =    $get_profit['cash_hand_c'];
         $data['cash_bkash_c']  =    $get_profit['cash_bkash_c'];
+        $data['cash_nagad_c']  =    $get_profit['cash_nagad_c'];
         $data['cash_bank_c']  =    $get_profit['cash_bank_c'];
         $data['right_total']  =    $data['current_assets']+  $get_profit['fixed_assets'];
         $data['net_profit']  =    ($data['gross_profit']-$data['indirect_expense'])+$get_profit['indirect_income'];
